@@ -1,6 +1,6 @@
 import Head from 'next/head';
 
-const Home = () => (
+const Home = (): JSX.Element => (
   <div className="container">
     <Head>
       <title>Le jeu des post-it sur le front</title>
