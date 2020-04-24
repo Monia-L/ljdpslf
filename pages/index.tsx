@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import { createGame as _createGame } from './lib/api';
+import { createGame as _createGame } from './lib/api/games';
 
 const useCreateGame = (): [boolean, () => Promise<void>] => {
   const [createdGameId, setCreatedGameId] = useState(null);

@@ -1,4 +1,4 @@
-type CreateGameAPIResponse = { id: string };
+export type CreateGameAPIResponse = { id: string };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const callApi = async (path: string, method = 'GET'): Promise<any> => {
@@ -6,7 +6,4 @@ const callApi = async (path: string, method = 'GET'): Promise<any> => {
   return response.json();
 };
 
-const createGame = async (): Promise<CreateGameAPIResponse> =>
-  callApi('games', 'POST');
-
-export { createGame };
+export { callApi };
