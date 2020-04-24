@@ -7,12 +7,8 @@ const useCreateGame = (): [boolean, () => Promise<void>] => {
   const [createdGameId, setCreatedGameId] = useState(null);
 
   const createGame = async (): Promise<void> => {
-    try {
-      const { id } = await _createGame();
-      setCreatedGameId(id);
-    } catch {
-      console.error();
-    }
+    const { id } = await _createGame();
+    setCreatedGameId(id);
   };
 
   return [createdGameId, createGame];
