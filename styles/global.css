@@ -1,5 +1,6 @@
 html,
 body {
+  font-size: 18px;
   padding: 0;
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
@@ -13,7 +14,7 @@ body {
 
 .container {
   min-height: 100vh;
-  padding: 0 0.5rem;
+  padding: 0 14px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -26,5 +27,24 @@ button {
   padding: 8px;
   border: 4px solid black;
   background: #fff;
+  font-weight: bold;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: baseline;
+}
+
+form *:not(:last-child) {
+  margin-bottom: 14px;
+}
+
+.input-field {
+  width: 292px;
+  font-size: 18px;
+  padding: 8px;
+  border: none;
   font-weight: bold;
 }
