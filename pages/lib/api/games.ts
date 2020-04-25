@@ -1,6 +1,7 @@
-import { CreateGameAPIResponse, callApi } from '.';
+import { callApi } from '.';
 
-const createGame = async (): Promise<CreateGameAPIResponse> =>
-  callApi('games', 'POST');
+type Game = { id: string };
+
+const createGame = async (): Promise<Game> => callApi('games', 'POST');
 
 export { createGame };
