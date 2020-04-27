@@ -5,20 +5,14 @@ export type TGame = {
 };
 
 let client = null;
-
-const getClient = async (): Promise<MongoClient> => {
-  console.log('Connecting to Mongo');
-  return MongoClient.connect(process.env.DATABASE_URL, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  });
-};
-
 const getDatabase = async (): Promise<Db> => {
   if (!client) {
-    client = await getClient();
+    console.log('New connection to Mongo');
+    client = await MongoClient.connect(process.env.DATABASE_URL, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
   }
-
   return client.db();
 };
 
