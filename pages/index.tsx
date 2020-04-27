@@ -18,7 +18,9 @@ const Home = (): JSX.Element => {
   const router = useRouter();
 
   if (createdGameId) {
-    router.push(`/partie/${createdGameId}`);
+    router.push('/partie/[gameId]', `/partie/${createdGameId}`, {
+      shallow: true,
+    });
   }
 
   return <button onClick={createGame}>Créer une nouvelle partie</button>;
