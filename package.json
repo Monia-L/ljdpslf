@@ -21,6 +21,7 @@
     "uuid": "^7.0.3"
   },
   "devDependencies": {
+    "@now/node": "^1.5.1",
     "@types/mongodb": "^3.5.10",
     "@types/node": "^13.13.2",
     "@types/react": "^16.9.34",

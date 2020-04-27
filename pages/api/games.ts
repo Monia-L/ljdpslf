@@ -1,10 +1,7 @@
-import { IncomingMessage, ServerResponse } from 'http';
+import { NowRequest, NowResponse } from '@now/node';
 import { createGame } from '../../api/database/games';
 
-export default async (
-  req: IncomingMessage,
-  res: ServerResponse
-): Promise<void> => {
+export default async (req: NowRequest, res: NowResponse): Promise<void> => {
   if (req.method === 'POST') {
     const game = await createGame();
     res.statusCode = 201;

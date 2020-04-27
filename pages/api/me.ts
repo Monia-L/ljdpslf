@@ -1,14 +1,8 @@
-import { IncomingMessage, ServerResponse } from 'http';
+import { NowRequest, NowResponse } from '@now/node';
+
 import { setPlayerNameInGame } from '../../api/database/players';
 
-interface Req extends IncomingMessage {
-  body: {
-    name: string;
-    gameId: string;
-  };
-}
-
-export default async (req: Req, res: ServerResponse): Promise<void> => {
+export default async (req: NowRequest, res: NowResponse): Promise<void> => {
   if (req.method === 'PATCH') {
     const { name, gameId } = req.body;
     const sessionId = 'abcdef';
