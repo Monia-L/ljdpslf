@@ -1,5 +1,7 @@
-import PropTypes from 'prop-types';
 import Head from 'next/head';
+import { setCookie, parseCookies } from 'nookies';
+import PropTypes from 'prop-types';
+import { v4 as uuidv4 } from 'uuid';
 
 import '../styles/global.css';
 
@@ -15,6 +17,23 @@ const App = ({ Component, pageProps }): JSX.Element => {
       </main>
     </>
   );
+};
+
+App.getInitialProps = ({ ctx }): object => {
+  const isServer = Boolean(ctx.req);
+  if (isServer) {
+    const requestCookies = parseCookies(ctx);
+    if (!requestCookies.sessionId) {
+      setCookie(ctx, 'sessionId', uuidv4(), {
+        path: '/',
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: true,
+      });
+    }
+  }
+
+  return {};
 };
 
 App.propTypes = {
