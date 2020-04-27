@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 
-import { getCollection } from '.';
+import { getCollection } from './utils';
 
 type TGame = {
   id: string;
