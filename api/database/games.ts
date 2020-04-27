@@ -1,6 +1,10 @@
 import { v4 as uuidv4 } from 'uuid';
 
-import { TGame, getCollection } from '.';
+import { getCollection } from '.';
+
+type TGame = {
+  id: string;
+};
 
 const createGame = async (): Promise<TGame> => {
   const gamesCollection = await getCollection('games');
@@ -8,4 +12,16 @@ const createGame = async (): Promise<TGame> => {
   return response.ops[0];
 };
 
-export { createGame };
+const setPlayerNameInGame = async (
+  sessionId: string,
+  name: string,
+  gameId: string
+): Promise<void> => {
+  const gamesCollection = await getCollection('games');
+  await gamesCollection.updateOne(
+    { id: gameId },
+    { $set: { [`players.${sessionId}.name`]: name } }
+  );
+};
+
+export { createGame, setPlayerNameInGame };

@@ -1,9 +1,5 @@
 import { MongoClient, Db, Collection } from 'mongodb';
 
-export type TGame = {
-  id: string;
-};
-
 let client = null;
 const getDatabase = async (): Promise<Db> => {
   if (!client) {
