@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router';
 import { useState, Dispatch } from 'react';
-import { setMyName as _setMyName } from '../lib/api/me';
+
+import { setMyName as _setMyName } from '../../pages-lib/api/me';
 
 const useNameForm = (
   gameId: string
