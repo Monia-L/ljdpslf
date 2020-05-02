@@ -1,5 +1,5 @@
 import { NowRequest, NowResponse } from '@now/node';
-import { createGame } from './_database/games';
+import { createGame } from './_lib/database/games';
 
 export default async (req: NowRequest, res: NowResponse): Promise<void> => {
   if (req.method === 'POST') {

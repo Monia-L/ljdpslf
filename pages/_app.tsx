@@ -3,7 +3,7 @@ import { setCookie, parseCookies } from 'nookies';
 import PropTypes from 'prop-types';
 import { v4 as uuidv4 } from 'uuid';
 
-import '../styles/global.css';
+import './_styles/global.css';
 
 const App = ({ Component, pageProps }): JSX.Element => {
   return (

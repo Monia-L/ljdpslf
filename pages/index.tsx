@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import { createGame as _createGame } from '../pages-lib/api/games';
+import { createGame as _createGame } from './_lib/api/games';
 
 const useCreateGame = (): [boolean, () => Promise<void>] => {
   const [createdGameId, setCreatedGameId] = useState(null);

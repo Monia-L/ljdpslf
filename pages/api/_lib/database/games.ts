@@ -2,14 +2,15 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { getCollection } from './utils';
 
-type TGame = {
-  id: string;
-};
-
 const createGame = async (): Promise<TGame> => {
   const gamesCollection = await getCollection('games');
   const response = await gamesCollection.insertOne({ id: uuidv4() });
   return response.ops[0];
+};
+
+const getGame = async (id: string): Promise<TGame> => {
+  const gamesCollection = await getCollection('games');
+  return gamesCollection.findOne({ id });
 };
 
 const setPlayerNameInGame = async (
@@ -24,4 +25,4 @@ const setPlayerNameInGame = async (
   );
 };
 
-export { createGame, setPlayerNameInGame };
+export { createGame, setPlayerNameInGame, getGame };

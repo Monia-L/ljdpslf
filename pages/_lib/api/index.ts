@@ -1,7 +1,7 @@
 const callApi = async (
   path: string,
   method = 'GET',
-  body = {}
+  body = null
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): Promise<any> => {
   const response = await fetch(`/api/${path}`, {
@@ -9,10 +9,14 @@ const callApi = async (
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(body),
+    ...(body && { body: JSON.stringify(body) }),
   });
   const responseText = await response.text();
-  return responseText.length ? JSON.parse(responseText) : null;
+  return {
+    ok: response.ok,
+    status: response.status,
+    content: responseText.length ? JSON.parse(responseText) : null,
+  };
 };
 
 export { callApi };

@@ -1,6 +1,6 @@
 import { NowRequest, NowResponse } from '@now/node';
 
-import { setPlayerNameInGame } from './_database/games';
+import { setPlayerNameInGame } from './_lib/database/games';
 
 export default async (req: NowRequest, res: NowResponse): Promise<void> => {
   if (req.method === 'PATCH') {
