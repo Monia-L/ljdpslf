@@ -44,7 +44,7 @@ const PromptForName = ({ gameId, onSubmitSuccess }): JSX.Element => {
         id="name"
         value={name}
         onChange={({ target: { value } }): void => {
-          setName(value);
+          setName(value.trim());
         }}
       />
       <Button type="submit" isLoading={isLoading}>
