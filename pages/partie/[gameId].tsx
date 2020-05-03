@@ -4,10 +4,10 @@ import { useState, useEffect } from 'react';
 import {
   getGameDetails,
   GET_GAME_DETAILS_ERROR_MESSAGE,
-} from '../_lib/api/games';
-import LoadingIndicator from '../_lib/components/LoadingIndicator';
-import { getPlayerNames } from '../_lib/helpers/games';
-import PromptForName from './_PromptForName';
+} from '../../lib/api/games';
+import LoadingIndicator from '../../lib/components/global/LoadingIndicator';
+import { getPlayerNames } from '../../lib/helpers/games';
+import PromptForName from '../../lib/components/partie|[gameId]/PromptForName';
 
 const useGame = (
   gameId: string

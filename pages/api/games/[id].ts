@@ -1,8 +1,8 @@
 import { NowRequest, NowResponse } from '@now/node';
 
 import { getGame } from '../_lib/database/games';
-import { getPlayerNameInGame } from '../../_lib/helpers/games';
-import { GET_GAME_DETAILS_ERROR_MESSAGE } from '../../_lib/api/games';
+import { getPlayerNameInGame } from '../../../lib/helpers/games';
+import { GET_GAME_DETAILS_ERROR_MESSAGE } from '../../../lib/api/games';
 
 export default async (
   req: NowRequest,

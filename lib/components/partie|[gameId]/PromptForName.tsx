@@ -1,8 +1,8 @@
 import propTypes from 'prop-types';
 
-import { setMyName } from '../_lib/api/me';
+import { setMyName } from '../../api/me';
 import { useState, Dispatch } from 'react';
-import Button from '../_lib/components/Button';
+import Button from '../global/Button';
 
 const useSetName = (
   gameId: string,
