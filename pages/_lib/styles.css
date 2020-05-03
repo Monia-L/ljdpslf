@@ -37,5 +37,6 @@ form *:not(:last-child) {
   font-size: 18px;
   padding: 8px;
   border: none;
+  border-radius: 0;
   font-weight: bold;
 }
