@@ -17,8 +17,9 @@ const useGame = (
 
   const fetchPlayerNames = async (): Promise<void> => {
     try {
-      setPlayerNames(getPlayerNames(await getGameDetails(gameId)));
       setIsPromptingForName(false);
+      setIsLoading(true);
+      setPlayerNames(getPlayerNames(await getGameDetails(gameId)));
       setIsLoading(false);
     } catch (error) {
       if (

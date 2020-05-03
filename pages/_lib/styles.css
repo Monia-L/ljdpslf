@@ -21,16 +21,6 @@ body {
   align-items: center;
 }
 
-button {
-  font-size: 18px;
-  color: black;
-  padding: 8px;
-  margin: 0;
-  border: 4px solid black;
-  background: #fff;
-  font-weight: bold;
-}
-
 form {
   display: flex;
   flex-direction: column;

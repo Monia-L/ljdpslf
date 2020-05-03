@@ -2,29 +2,36 @@ import propTypes from 'prop-types';
 
 import { setMyName } from '../_lib/api/me';
 import { useState, Dispatch } from 'react';
+import Button from '../_lib/components/Button';
 
-const useNameForm = (
+const useSetName = (
   gameId: string,
   onSubmitSuccess: Function
-): [string, Dispatch<string>, Function] => {
+): [string, Dispatch<string>, Function, boolean] => {
+  const [isLoading, setIsLoading] = useState(false);
   const [name, setName] = useState('');
 
-  const submitForm = async (): Promise<void> => {
+  const submitName = async (): Promise<void> => {
+    setIsLoading(true);
     await setMyName(name, gameId);
+    setIsLoading(false);
     onSubmitSuccess();
   };
 
-  return [name, setName, submitForm];
+  return [name, setName, submitName, isLoading];
 };
 
 const PromptForName = ({ gameId, onSubmitSuccess }): JSX.Element => {
-  const [name, setName, submitForm] = useNameForm(gameId, onSubmitSuccess);
+  const [name, setName, submitName, isLoading] = useSetName(
+    gameId,
+    onSubmitSuccess
+  );
 
   return (
     <form
       onSubmit={(event): void => {
         event.preventDefault();
-        submitForm();
+        submitName();
       }}
     >
       <label htmlFor="name">Votre nom :</label>
@@ -39,7 +46,9 @@ const PromptForName = ({ gameId, onSubmitSuccess }): JSX.Element => {
           setName(value);
         }}
       />
-      <button type="submit">Valider</button>
+      <Button type="submit" isLoading={isLoading}>
+        Valider
+      </Button>
     </form>
   );
 };
