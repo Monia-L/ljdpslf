@@ -38,6 +38,7 @@ const PromptForName = ({ gameId, onSubmitSuccess }): JSX.Element => {
       <input
         className="input-field"
         type="text"
+        required
         minLength={2}
         name="name"
         id="name"
