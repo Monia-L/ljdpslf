@@ -5,6 +5,7 @@ import {
   getGameDetails,
   GET_GAME_DETAILS_ERROR_MESSAGE,
 } from '../_lib/api/games';
+import LoadingIndicator from '../_lib/components/LoadingIndicator';
 import { getPlayerNames } from '../_lib/helpers/games';
 import PromptForName from './_PromptForName';
 
@@ -53,7 +54,7 @@ const Game = (): JSX.Element => {
   ] = useGame(gameId);
 
   if (isLoading) {
-    return <p>Chargement…</p>;
+    return <LoadingIndicator />;
   }
 
   if (isPromptingForName) {
