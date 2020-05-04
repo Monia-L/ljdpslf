@@ -13,7 +13,7 @@ const useSetName = (
 
   const submitName = async (): Promise<void> => {
     setIsLoading(true);
-    await setMyName(name, gameId);
+    await setMyName(name.trim(), gameId);
     setIsLoading(false);
     onSubmitSuccess();
   };
@@ -44,7 +44,7 @@ const PromptForName = ({ gameId, onSubmitSuccess }): JSX.Element => {
         id="name"
         value={name}
         onChange={({ target: { value } }): void => {
-          setName(value.trim());
+          setName(value);
         }}
       />
       <Button type="submit" isLoading={isLoading}>
