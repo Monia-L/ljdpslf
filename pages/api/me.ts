@@ -1,12 +1,12 @@
 import { NowRequest, NowResponse } from '@now/node';
 
-import { setPlayerNameInGame } from './_lib/database/games';
+import { registerPlayer } from './_lib/database/games';
 
 export default async (req: NowRequest, res: NowResponse): Promise<void> => {
   if (req.method === 'PATCH') {
     const { name, gameId } = req.body;
     const sessionId = req.cookies.sessionId;
-    await setPlayerNameInGame(sessionId, name, gameId);
+    await registerPlayer(sessionId, name, gameId);
     res.statusCode = 200;
     return res.end();
   }

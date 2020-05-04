@@ -3,7 +3,7 @@ import { createGame } from './_lib/database/games';
 
 export default async (req: NowRequest, res: NowResponse): Promise<void> => {
   if (req.method === 'POST') {
-    const game = await createGame();
+    const game = await createGame(req.cookies.sessionId);
     res.statusCode = 201;
     return res.end(JSON.stringify(game));
   }

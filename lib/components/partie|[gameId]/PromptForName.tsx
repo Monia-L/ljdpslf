@@ -1,6 +1,6 @@
 import propTypes from 'prop-types';
 
-import { setMyName } from '../../api/me';
+import { registerInGame } from '../../api/me';
 import { useState, Dispatch } from 'react';
 import Button from '../global/Button';
 
@@ -13,7 +13,7 @@ const useSetName = (
 
   const submitName = async (): Promise<void> => {
     setIsLoading(true);
-    await setMyName(name.trim(), gameId);
+    await registerInGame(name.trim(), gameId);
     setIsLoading(false);
     onSubmitSuccess();
   };

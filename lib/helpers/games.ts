@@ -1,16 +1,23 @@
-const getPlayerNames = (game: TGame): Array<TPlayer> => {
-  const players = game.players || [];
-  const playerNames = Object.keys(players).map(
-    (sessionId) => game.players[sessionId].name
-  );
-  return playerNames;
-};
+const getGamePublicFieldsOnly = ({
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  _sessions,
+  ...gameWithoutSessions
+}: TGame): TGame => gameWithoutSessions;
 
-const getPlayerNameInGame = (game: TGame, sessionId: string): string => {
-  if (game.players && sessionId in game.players) {
-    return game.players[sessionId].name;
+const getPlayer = (game: TGame, sessionId: string): TPlayer => {
+  const sessionInGame = game._sessions.find(({ id }) => id === sessionId);
+  if (sessionInGame) {
+    return game.players.find(({ id }) => id === sessionInGame.playerId);
   }
-  return '';
+  return null;
 };
 
-export { getPlayerNames, getPlayerNameInGame };
+const getPlayerName = (game: TGame, sessionId: string): string => {
+  const player = getPlayer(game, sessionId);
+  return player ? player.name : '';
+};
+
+const getPlayerNames = (game: TGame): Array<string> =>
+  game.players.map(({ name }) => name);
+
+export { getGamePublicFieldsOnly, getPlayer, getPlayerName, getPlayerNames };
