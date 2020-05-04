@@ -63,7 +63,7 @@ const Game = (): JSX.Element => {
 
   return (
     <>
-      <p>Participants :</p>
+      <h2>Participants :</h2>
       <ul>
         {playerNames.map((playerName) => (
           <li key={playerName}>{playerName}</li>

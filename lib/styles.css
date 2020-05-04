@@ -29,6 +29,14 @@ body {
   padding: 0 14px;
 }
 
+h2 {
+  font-size: inherit;
+}
+
+ul {
+  padding-inline-start: 20px;
+}
+
 form {
   display: flex;
   flex-direction: column;
