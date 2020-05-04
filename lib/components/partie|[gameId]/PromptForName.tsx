@@ -37,11 +37,12 @@ const PromptForName = ({ gameId, onSubmitSuccess }): JSX.Element => {
       <label htmlFor="name">Votre nom :</label>
       <input
         className="input-field"
+        id="name"
+        name="name"
         type="text"
         required
         minLength={2}
-        name="name"
-        id="name"
+        autoFocus
         value={name}
         onChange={({ target: { value } }): void => {
           setName(value);
