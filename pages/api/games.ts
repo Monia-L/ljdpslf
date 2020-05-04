@@ -1,12 +1,13 @@
 import { NowRequest, NowResponse } from '@now/node';
 import { createGame } from './_lib/database/games';
 
-export default async (req: NowRequest, res: NowResponse): Promise<void> => {
+export default async (
+  req: NowRequest,
+  res: NowResponse
+): Promise<NowResponse> => {
   if (req.method === 'POST') {
-    const game = await createGame(req.cookies.sessionId);
-    res.statusCode = 201;
-    return res.end(JSON.stringify(game));
+    const { id } = await createGame(req.cookies.sessionId);
+    return res.status(201).json({ id });
   }
-  res.statusCode = 405;
-  return res.end();
+  return res.status(405);
 };

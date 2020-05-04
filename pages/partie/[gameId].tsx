@@ -6,21 +6,24 @@ import {
   GET_GAME_DETAILS_ERROR_MESSAGE,
 } from '../../lib/api/games';
 import LoadingIndicator from '../../lib/components/global/LoadingIndicator';
-import { getPlayerNames } from '../../lib/helpers/games';
 import PromptForName from '../../lib/components/partie|[gameId]/PromptForName';
 
 const useGame = (
   gameId: string
-): [boolean, boolean, () => Promise<void>, Array<string>] => {
+): [boolean, boolean, () => Promise<void>, TGamePublic] => {
   const [isLoading, setIsLoading] = useState(true);
   const [isPromptingForName, setIsPromptingForName] = useState(false);
-  const [playerNames, setPlayerNames] = useState([]);
+  const [gameDetails, setGameDetails] = useState({
+    id: '',
+    me: null,
+    otherPlayers: [],
+  });
 
   const fetchPlayerNames = async (): Promise<void> => {
     try {
       setIsPromptingForName(false);
       setIsLoading(true);
-      setPlayerNames(getPlayerNames(await getGameDetails(gameId)));
+      setGameDetails(await getGameDetails(gameId));
       setIsLoading(false);
     } catch (error) {
       if (
@@ -39,7 +42,7 @@ const useGame = (
     fetchPlayerNames();
   }, []);
 
-  return [isLoading, isPromptingForName, fetchPlayerNames, playerNames];
+  return [isLoading, isPromptingForName, fetchPlayerNames, gameDetails];
 };
 
 const Game = (): JSX.Element => {
@@ -50,7 +53,7 @@ const Game = (): JSX.Element => {
     isLoading,
     isPromptingForName,
     fetchPlayerNames,
-    playerNames,
+    { me, otherPlayers },
   ] = useGame(gameId);
 
   if (isLoading) {
@@ -65,8 +68,9 @@ const Game = (): JSX.Element => {
     <>
       <h2>Participants :</h2>
       <ul>
-        {playerNames.map((playerName) => (
-          <li key={playerName}>{playerName}</li>
+        <li key={me.id}>{me.name} (vous)</li>
+        {otherPlayers.map((player) => (
+          <li key={player.id}>{player.name}</li>
         ))}
       </ul>
     </>

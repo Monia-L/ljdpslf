@@ -1,7 +1,8 @@
-type TGame = {
+type TGameDatabase = {
   id: string;
-  _sessions?: Array<TSession>;
+  _sessions: Array<TSession>;
   players: Array<TPlayer>;
+  owner: string;
 };
 
 type TSession = {
@@ -12,4 +13,11 @@ type TSession = {
 type TPlayer = {
   id: string;
   name: string;
+  isOwner: string;
+};
+
+type TGamePublic = {
+  id: string;
+  me: TPlayer;
+  otherPlayers: Array<TPlayer>;
 };

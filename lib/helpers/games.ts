@@ -1,10 +1,4 @@
-const getGamePublicFieldsOnly = ({
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  _sessions,
-  ...gameWithoutSessions
-}: TGame): TGame => gameWithoutSessions;
-
-const getPlayer = (game: TGame, sessionId: string): TPlayer => {
+const getPlayer = (game: TGameDatabase, sessionId: string): TPlayer => {
   const sessionInGame = game._sessions.find(({ id }) => id === sessionId);
   if (sessionInGame) {
     return game.players.find(({ id }) => id === sessionInGame.playerId);
@@ -12,12 +6,24 @@ const getPlayer = (game: TGame, sessionId: string): TPlayer => {
   return null;
 };
 
-const getPlayerName = (game: TGame, sessionId: string): string => {
-  const player = getPlayer(game, sessionId);
-  return player ? player.name : '';
+const getGamePublicDetails = (
+  game: TGameDatabase,
+  sessionId: string
+): TGamePublic => {
+  const me = getPlayer(game, sessionId);
+  return {
+    id: game.id,
+    me,
+    otherPlayers: game.players.filter(({ id }) => id !== me.id),
+  };
 };
 
-const getPlayerNames = (game: TGame): Array<string> =>
-  game.players.map(({ name }) => name);
+const doesPlayerHaveAName = (
+  game: TGameDatabase,
+  sessionId: string
+): boolean => {
+  const player = getPlayer(game, sessionId);
+  return player ? Boolean(player.name) : false;
+};
 
-export { getGamePublicFieldsOnly, getPlayer, getPlayerName, getPlayerNames };
+export { getGamePublicDetails, getPlayer, doesPlayerHaveAName };

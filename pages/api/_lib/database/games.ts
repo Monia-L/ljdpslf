@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { getCollection } from './utils';
 import { getPlayer } from '../../../../lib/helpers/games';
 
-const createGame = async (ownerSessionId: string): Promise<TGame> => {
+const createGame = async (ownerSessionId: string): Promise<TGameDatabase> => {
   const gamesCollection = await getCollection('games');
   const playerId = uuidv4();
   const response = await gamesCollection.insertOne({
@@ -14,7 +14,7 @@ const createGame = async (ownerSessionId: string): Promise<TGame> => {
   return response.ops[0];
 };
 
-const getGame = async (id: string): Promise<TGame> => {
+const getGame = async (id: string): Promise<TGameDatabase> => {
   const gamesCollection = await getCollection('games');
   return gamesCollection.findOne({ id });
 };
