@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
 
-import { GamePhase, TGamePublic } from '../../types';
+import { GamePhase, TGameForPlayer } from '../../types';
 import {
   getGameDetails,
   GET_GAME_DETAILS_ERROR_MESSAGE,
@@ -18,7 +18,7 @@ const useGame = (
   string,
   boolean,
   () => Promise<void>,
-  TGamePublic,
+  TGameForPlayer,
   () => Promise<void>
 ] => {
   const [isLoading, setIsLoading] = useState(true);

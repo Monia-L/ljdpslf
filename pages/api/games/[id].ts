@@ -3,7 +3,7 @@ import { NowRequest, NowResponse } from '@now/node';
 import { getGame, updateGamePhase } from '../_lib/database/games';
 import {
   isPlayerRegistered,
-  getGamePublicDetails,
+  getGameForPlayer,
 } from '../../../lib/helpers/games';
 import { GET_GAME_DETAILS_ERROR_MESSAGE } from '../../../lib/api/games';
 import { GamePhase } from '../../../types';
@@ -28,7 +28,7 @@ export default async (
         message: GET_GAME_DETAILS_ERROR_MESSAGE.YOU_HAVE_MISSED_GAME_START,
       });
     }
-    return res.status(200).json(getGamePublicDetails(game, sessionId));
+    return res.status(200).json(getGameForPlayer(game, sessionId));
   }
   if (req.method === 'PATCH') {
     const {

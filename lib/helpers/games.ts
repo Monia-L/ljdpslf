@@ -1,4 +1,4 @@
-import { TGameDatabase, TGamePublic, TPlayer } from '../../types';
+import { TGameDatabase, TGameForPlayer, TPlayer } from '../../types';
 
 const getPlayer = (game: TGameDatabase, sessionId: string): TPlayer => {
   const sessionInGame = game._sessions.find(({ id }) => id === sessionId);
@@ -8,10 +8,10 @@ const getPlayer = (game: TGameDatabase, sessionId: string): TPlayer => {
   return null;
 };
 
-const getGamePublicDetails = (
+const getGameForPlayer = (
   game: TGameDatabase,
   sessionId: string
-): TGamePublic => {
+): TGameForPlayer => {
   const me = getPlayer(game, sessionId);
   return {
     id: game.id,
@@ -29,4 +29,4 @@ const isPlayerRegistered = (
   return player ? Boolean(player.name) : false;
 };
 
-export { getGamePublicDetails, getPlayer, isPlayerRegistered };
+export { getGameForPlayer, getPlayer, isPlayerRegistered };

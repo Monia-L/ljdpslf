@@ -17,7 +17,7 @@ export type TPlayer = {
   isOwner: string;
 };
 
-export type TGamePublic = {
+export type TGameForPlayer = {
   id: string;
   me: TPlayer;
   otherPlayers: Array<TPlayer>;
