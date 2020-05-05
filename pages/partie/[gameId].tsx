@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
 
-import { GameStage, TGamePublic } from '../../types';
+import { GamePhase, TGamePublic } from '../../types';
 import {
   getGameDetails,
   GET_GAME_DETAILS_ERROR_MESSAGE,
@@ -93,10 +93,10 @@ const Game = (): JSX.Element => {
   }
 
   if (gameDetails) {
-    const { me, otherPlayers, stage } = gameDetails;
+    const { me, otherPlayers, phase } = gameDetails;
 
-    if (stage === GameStage.WRITING) {
-      return <h2>WRITING</h2>;
+    if (phase === GamePhase.WRITING_PHRASE_TO_GUESS) {
+      return <h2>WRITING_PHRASE_TO_GUESS</h2>;
     }
 
     return (

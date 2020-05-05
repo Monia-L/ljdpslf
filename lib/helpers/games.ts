@@ -17,7 +17,7 @@ const getGamePublicDetails = (
     id: game.id,
     me,
     otherPlayers: game.players.filter(({ id }) => id !== me.id),
-    stage: game.stage,
+    phase: game.phase,
   };
 };
 

@@ -1,12 +1,12 @@
 import { NowRequest, NowResponse } from '@now/node';
 
-import { getGame, updateGameStage } from '../_lib/database/games';
+import { getGame, updateGamePhase } from '../_lib/database/games';
 import {
   doesPlayerHaveAName,
   getGamePublicDetails,
 } from '../../../lib/helpers/games';
 import { GET_GAME_DETAILS_ERROR_MESSAGE } from '../../../lib/api/games';
-import { GameStage } from '../../../types';
+import { GamePhase } from '../../../types';
 
 export default async (
   req: NowRequest,
@@ -19,7 +19,7 @@ export default async (
     const { sessionId } = req.cookies;
     const game = await getGame(id as string);
     if (!doesPlayerHaveAName(game, sessionId)) {
-      if (game.stage === GameStage.WAITING_FOR_PLAYERS) {
+      if (game.phase === GamePhase.WAITING_FOR_PLAYERS) {
         return res.status(403).json({
           message: GET_GAME_DETAILS_ERROR_MESSAGE.YOU_MUST_FIRST_SET_YOUR_NAME,
         });
@@ -34,9 +34,9 @@ export default async (
     const {
       query: { id },
     } = req;
-    const { stage } = req.body;
-    if (Object.values(GameStage).includes(stage)) {
-      const game = await updateGameStage(id as string, stage);
+    const { phase } = req.body;
+    if (Object.values(GamePhase).includes(phase)) {
+      const game = await updateGamePhase(id as string, phase);
       return res.status(200).json(game);
     }
     return res.status(400);

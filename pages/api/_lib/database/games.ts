@@ -2,7 +2,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { getCollection } from './utils';
 import { getPlayer } from '../../../../lib/helpers/games';
-import { GameStage, TGameDatabase } from '../../../../types';
+import { GamePhase, TGameDatabase } from '../../../../types';
 
 const createGame = async (ownerSessionId: string): Promise<TGameDatabase> => {
   const gamesCollection = await getCollection('games');
@@ -11,7 +11,7 @@ const createGame = async (ownerSessionId: string): Promise<TGameDatabase> => {
     id: uuidv4(),
     players: [{ id: playerId, isOwner: true }],
     _sessions: [{ id: ownerSessionId, playerId }],
-    stage: GameStage.WAITING_FOR_PLAYERS,
+    phase: GamePhase.WAITING_FOR_PLAYERS,
   });
   return response.ops[0];
 };
@@ -48,17 +48,17 @@ const registerPlayer = async (
   }
 };
 
-const updateGameStage = async (
+const updateGamePhase = async (
   id: string,
-  stage: GameStage
+  phase: GamePhase
 ): Promise<TGameDatabase> => {
   const gamesCollection = await getCollection('games');
   const response = await gamesCollection.findOneAndUpdate(
     { id },
-    { $set: { stage } },
+    { $set: { phase } },
     { returnOriginal: false }
   );
   return response.value;
 };
 
-export { createGame, registerPlayer, getGame, updateGameStage };
+export { createGame, registerPlayer, getGame, updateGamePhase };

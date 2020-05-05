@@ -3,7 +3,7 @@ export type TGameDatabase = {
   _sessions: Array<TSession>;
   players: Array<TPlayer>;
   owner: string;
-  stage: GameStage;
+  phase: GamePhase;
 };
 
 export type TSession = {
@@ -21,12 +21,12 @@ export type TGamePublic = {
   id: string;
   me: TPlayer;
   otherPlayers: Array<TPlayer>;
-  stage: GameStage;
+  phase: GamePhase;
 };
 
-export enum GameStage {
+export enum GamePhase {
   WAITING_FOR_PLAYERS = 'WAITING_FOR_PLAYERS',
-  WRITING = 'WRITING',
+  WRITING_PHRASE_TO_GUESS = 'WRITING_PHRASE_TO_GUESS',
   GUESSING = 'GUESSING',
   COMPLETED = 'COMPLETED',
 }
