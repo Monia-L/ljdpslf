@@ -1,4 +1,5 @@
 import { callApi } from '.';
+import { TGamePublic, GameStage } from '../../types';
 
 const createGame = async (): Promise<TGamePublic> => {
   return (await callApi('games', 'POST')).content;
@@ -21,4 +22,9 @@ const getGameDetails = async (id: string): Promise<TGamePublic> => {
   }
 };
 
-export { createGame, getGameDetails };
+const enterWritingPhase = async (id: string): Promise<TGamePublic> => {
+  return (await callApi(`games/${id}`, 'PATCH', { stage: GameStage.WRITING }))
+    .content;
+};
+
+export { createGame, getGameDetails, enterWritingPhase };

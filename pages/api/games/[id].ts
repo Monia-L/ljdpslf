@@ -1,11 +1,12 @@
 import { NowRequest, NowResponse } from '@now/node';
 
-import { getGame } from '../_lib/database/games';
+import { getGame, updateGameStage } from '../_lib/database/games';
 import {
   doesPlayerHaveAName,
   getGamePublicDetails,
 } from '../../../lib/helpers/games';
 import { GET_GAME_DETAILS_ERROR_MESSAGE } from '../../../lib/api/games';
+import { GameStage } from '../../../types';
 
 export default async (
   req: NowRequest,
@@ -23,6 +24,17 @@ export default async (
       });
     }
     return res.status(200).json(getGamePublicDetails(game, sessionId));
+  }
+  if (req.method === 'PATCH') {
+    const {
+      query: { id },
+    } = req;
+    const { stage } = req.body;
+    if (Object.values(GameStage).includes(stage)) {
+      const game = await updateGameStage(id as string, stage);
+      return res.status(200).json(game);
+    }
+    return res.status(400);
   }
   return res.status(405);
 };

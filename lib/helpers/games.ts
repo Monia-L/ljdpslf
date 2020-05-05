@@ -1,3 +1,5 @@
+import { TGameDatabase, TGamePublic, TPlayer } from '../../types';
+
 const getPlayer = (game: TGameDatabase, sessionId: string): TPlayer => {
   const sessionInGame = game._sessions.find(({ id }) => id === sessionId);
   if (sessionInGame) {
@@ -15,6 +17,7 @@ const getGamePublicDetails = (
     id: game.id,
     me,
     otherPlayers: game.players.filter(({ id }) => id !== me.id),
+    stage: game.stage,
   };
 };
 
