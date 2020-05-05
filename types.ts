@@ -22,6 +22,7 @@ export type TGameForPlayer = {
   me: TPlayer;
   otherPlayers: Array<TPlayer>;
   phase: GamePhase;
+  playerToWritePhraseFor?: TPlayer;
 };
 
 export enum GamePhase {

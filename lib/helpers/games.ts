@@ -1,4 +1,4 @@
-import { TGameDatabase, TGameForPlayer, TPlayer } from '../../types';
+import { TGameDatabase, TGameForPlayer, TPlayer, GamePhase } from '../../types';
 
 const getPlayer = (game: TGameDatabase, sessionId: string): TPlayer => {
   const sessionInGame = game._sessions.find(({ id }) => id === sessionId);
@@ -6,6 +6,17 @@ const getPlayer = (game: TGameDatabase, sessionId: string): TPlayer => {
     return game.players.find(({ id }) => id === sessionInGame.playerId);
   }
   return null;
+};
+
+const getPlayerToWritePhraseFor = (
+  players: Array<TPlayer>,
+  currentPlayerId: string
+): TPlayer => {
+  const currentPlayerIndex = players.findIndex(
+    ({ id }) => id === currentPlayerId
+  );
+  const nextPlayerIndex = (currentPlayerIndex + 1) % players.length;
+  return players[nextPlayerIndex];
 };
 
 const getGameForPlayer = (
@@ -18,6 +29,9 @@ const getGameForPlayer = (
     me,
     otherPlayers: game.players.filter(({ id }) => id !== me.id),
     phase: game.phase,
+    ...(game.phase === GamePhase.WRITING_PHRASE_TO_GUESS && {
+      playerToWritePhraseFor: getPlayerToWritePhraseFor(game.players, me.id),
+    }),
   };
 };
 

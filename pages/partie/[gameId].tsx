@@ -93,10 +93,10 @@ const Game = (): JSX.Element => {
   }
 
   if (gameDetails) {
-    const { me, otherPlayers, phase } = gameDetails;
+    const { me, otherPlayers, phase, playerToWritePhraseFor } = gameDetails;
 
     if (phase === GamePhase.WRITING_PHRASE_TO_GUESS) {
-      return <h2>WRITING_PHRASE_TO_GUESS</h2>;
+      return <h2>Écrivez le post-it de {playerToWritePhraseFor.name} :</h2>;
     }
 
     return (
