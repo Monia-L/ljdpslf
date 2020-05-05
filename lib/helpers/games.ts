@@ -21,7 +21,7 @@ const getGamePublicDetails = (
   };
 };
 
-const doesPlayerHaveAName = (
+const isPlayerRegistered = (
   game: TGameDatabase,
   sessionId: string
 ): boolean => {
@@ -29,4 +29,4 @@ const doesPlayerHaveAName = (
   return player ? Boolean(player.name) : false;
 };
 
-export { getGamePublicDetails, getPlayer, doesPlayerHaveAName };
+export { getGamePublicDetails, getPlayer, isPlayerRegistered };
