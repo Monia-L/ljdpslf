@@ -12,11 +12,11 @@ export default async (
   req: NowRequest,
   res: NowResponse
 ): Promise<NowResponse> => {
+  const {
+    query: { id },
+  } = req;
+  const { sessionId } = req.cookies;
   if (req.method === 'GET') {
-    const {
-      query: { id },
-    } = req;
-    const { sessionId } = req.cookies;
     const game = await getGame(id as string);
     if (!isPlayerRegistered(game, sessionId)) {
       if (game.phase === GamePhase.WAITING_FOR_PLAYERS) {
@@ -31,15 +31,12 @@ export default async (
     return res.status(200).json(getGameForPlayer(game, sessionId));
   }
   if (req.method === 'PATCH') {
-    const {
-      query: { id },
-    } = req;
     const { phase } = req.body;
-    if (Object.values(GamePhase).includes(phase)) {
+    if (phase === GamePhase.WRITING_PHRASE_TO_GUESS) {
       const game = await updateGamePhase(id as string, phase);
-      return res.status(200).json(game);
+      return res.status(200).json(getGameForPlayer(game, sessionId));
     }
-    return res.status(400);
+    return res.status(400).send(null);
   }
-  return res.status(405);
+  return res.status(405).send(null);
 };

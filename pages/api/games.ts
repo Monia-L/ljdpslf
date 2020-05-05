@@ -9,5 +9,5 @@ export default async (
     const { id } = await createGame(req.cookies.sessionId);
     return res.status(201).json({ id });
   }
-  return res.status(405);
+  return res.status(405).send(null);
 };
