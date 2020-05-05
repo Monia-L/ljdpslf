@@ -6,16 +6,13 @@ const createGame = async (): Promise<TGamePublic> => {
 };
 
 export enum GET_GAME_DETAILS_ERROR_MESSAGE {
-  YOU_MUST_FIRST_SET_YOUR_NAME = 'YOU_MUST_FIRST_SET_YOUR_NAME',
+  YOU_MUST_FIRST_SET_YOUR_NAME = 'You must first set your name',
+  YOU_HAVE_MISSED_GAME_START = 'Trop tard, la partie a commencé sans vous.',
 }
 
 const getGameDetails = async (id: string): Promise<TGamePublic> => {
   const response = await callApi(`games/${id}`, 'GET');
-  if (
-    response.status === 403 &&
-    response.content.message ===
-      GET_GAME_DETAILS_ERROR_MESSAGE.YOU_MUST_FIRST_SET_YOUR_NAME
-  ) {
+  if (response.status === 403) {
     throw new Error(response.content.message);
   } else {
     return response.content;

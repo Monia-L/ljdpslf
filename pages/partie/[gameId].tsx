@@ -15,12 +15,14 @@ const useGame = (
   gameId: string
 ): [
   boolean,
+  string,
   boolean,
   () => Promise<void>,
   TGamePublic,
   () => Promise<void>
 ] => {
   const [isLoading, setIsLoading] = useState(true);
+  const [mainMessage, setMainMessage] = useState('');
   const [isPromptingForName, setIsPromptingForName] = useState(false);
   const [gameDetails, setGameDetails] = useState(null);
 
@@ -31,14 +33,18 @@ const useGame = (
       setGameDetails(await getGameDetails(gameId));
       setIsLoading(false);
     } catch (error) {
-      if (
-        error.message ===
-        GET_GAME_DETAILS_ERROR_MESSAGE.YOU_MUST_FIRST_SET_YOUR_NAME
-      ) {
-        setIsPromptingForName(true);
-        setIsLoading(false);
-      } else {
-        console.error(error);
+      switch (error.message) {
+        case GET_GAME_DETAILS_ERROR_MESSAGE.YOU_MUST_FIRST_SET_YOUR_NAME:
+          setIsPromptingForName(true);
+          setIsLoading(false);
+          break;
+        case GET_GAME_DETAILS_ERROR_MESSAGE.YOU_HAVE_MISSED_GAME_START:
+          setMainMessage(error.message);
+          setIsLoading(false);
+          break;
+        default:
+          console.error(error);
+          break;
       }
     }
   };
@@ -53,6 +59,7 @@ const useGame = (
 
   return [
     isLoading,
+    mainMessage,
     isPromptingForName,
     fetchGameDetails,
     gameDetails,
@@ -66,6 +73,7 @@ const Game = (): JSX.Element => {
 
   const [
     isLoading,
+    mainMessage,
     isPromptingForName,
     fetchGameDetails,
     gameDetails,
@@ -74,6 +82,10 @@ const Game = (): JSX.Element => {
 
   if (isLoading) {
     return <LoadingIndicator />;
+  }
+
+  if (mainMessage) {
+    return <p>{mainMessage}</p>;
   }
 
   if (isPromptingForName) {

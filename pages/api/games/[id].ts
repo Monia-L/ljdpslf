@@ -19,8 +19,13 @@ export default async (
     const { sessionId } = req.cookies;
     const game = await getGame(id as string);
     if (!doesPlayerHaveAName(game, sessionId)) {
+      if (game.stage === GameStage.WAITING_FOR_PLAYERS) {
+        return res.status(403).json({
+          message: GET_GAME_DETAILS_ERROR_MESSAGE.YOU_MUST_FIRST_SET_YOUR_NAME,
+        });
+      }
       return res.status(403).json({
-        message: GET_GAME_DETAILS_ERROR_MESSAGE.YOU_MUST_FIRST_SET_YOUR_NAME,
+        message: GET_GAME_DETAILS_ERROR_MESSAGE.YOU_HAVE_MISSED_GAME_START,
       });
     }
     return res.status(200).json(getGamePublicDetails(game, sessionId));
