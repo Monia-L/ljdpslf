@@ -1,16 +1,13 @@
 import { TGameDatabase, TGameForPlayer, TPlayer, GamePhase } from '../../types';
 
-const getPlayer = (game: TGameDatabase, sessionId: string): TPlayer => {
+const getPlayerFromSessionId = (
+  game: TGameDatabase,
+  sessionId: string
+): TPlayer => {
   const sessionInGame = game._sessions.find(({ id }) => id === sessionId);
-  if (sessionInGame) {
-    const player = game.players.find(({ id }) => id === sessionInGame.playerId);
-    return {
-      id: player.id,
-      name: player.name,
-      isOwner: player.isOwner,
-    };
-  }
-  return null;
+  return sessionInGame
+    ? game.players.find(({ id }) => id === sessionInGame.playerId)
+    : null;
 };
 
 const getPlayerToWritePhraseFor = (
@@ -28,11 +25,15 @@ const getGameForPlayer = (
   game: TGameDatabase,
   sessionId: string
 ): TGameForPlayer => {
-  const currentPlayer = getPlayer(game, sessionId);
+  const currentPlayer = getPlayerFromSessionId(game, sessionId);
   return {
     id: game.id,
-    me: currentPlayer,
-    otherPlayers: game.players.filter(({ id }) => id !== currentPlayer.id),
+    players: game.players.map((player) => ({
+      ...player,
+      ...(player.id === currentPlayer.id
+        ? { isMe: true, phraseToGuess: undefined }
+        : { isMe: false }),
+    })),
     phase: game.phase,
     ...(game.phase === GamePhase.WRITING_PHRASE_TO_GUESS && {
       playerToWritePhraseFor: getPlayerToWritePhraseFor(
@@ -47,13 +48,13 @@ const isPlayerRegistered = (
   game: TGameDatabase,
   sessionId: string
 ): boolean => {
-  const player = getPlayer(game, sessionId);
-  return player ? Boolean(player.name) : false;
+  const player = getPlayerFromSessionId(game, sessionId);
+  return Boolean(player && player.name);
 };
 
 export {
   getGameForPlayer,
-  getPlayer,
+  getPlayerFromSessionId,
   isPlayerRegistered,
   getPlayerToWritePhraseFor,
 };

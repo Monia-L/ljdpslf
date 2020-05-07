@@ -2,7 +2,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { getCollection } from './utils';
 import {
-  getPlayer,
+  getPlayerFromSessionId,
   getPlayerToWritePhraseFor,
 } from '../../../../lib/helpers/games';
 import { GamePhase, TGameDatabase } from '../../../../types';
@@ -31,7 +31,7 @@ const registerPlayer = async (
 ): Promise<TGameDatabase> => {
   const gamesCollection = await getCollection('games');
   const game = await getGame(gameId);
-  const existingPlayer = getPlayer(game, sessionId);
+  const existingPlayer = getPlayerFromSessionId(game, sessionId);
   if (existingPlayer) {
     const response = await gamesCollection.findOneAndUpdate(
       { id: gameId, 'players.id': existingPlayer.id },
@@ -41,7 +41,7 @@ const registerPlayer = async (
     return response.value;
   } else {
     const newPlayerId = uuidv4();
-    const response = gamesCollection.findOneAndUpdate(
+    const response = await gamesCollection.findOneAndUpdate(
       { id: gameId },
       {
         $push: {
@@ -51,7 +51,7 @@ const registerPlayer = async (
       },
       { returnOriginal: false }
     );
-    return (await response).value;
+    return response.value;
   }
 };
 
@@ -77,7 +77,7 @@ const setPhraseToGuess = async (
   const game = await getGame(gameId);
   const playerWithPhraseToGuess = getPlayerToWritePhraseFor(
     game.players,
-    getPlayer(game, sessionId).id
+    getPlayerFromSessionId(game, sessionId).id
   );
   const response = await gamesCollection.findOneAndUpdate(
     { id: gameId, 'players.id': playerWithPhraseToGuess.id },

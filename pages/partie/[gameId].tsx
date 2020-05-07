@@ -112,18 +112,26 @@ const Game = (): JSX.Element => {
   }
 
   if (gameDetails) {
-    const { me, otherPlayers, phase, playerToWritePhraseFor } = gameDetails;
+    const { players, phase, playerToWritePhraseFor } = gameDetails;
+    const amIOwner = Boolean(
+      players.find(({ isOwner, isMe }) => isOwner && isMe)
+    );
 
     if (phase === GamePhase.WRITING_PHRASE_TO_GUESS) {
       if (playerToWritePhraseFor.phraseToGuess) {
         return (
           <ul>
-            <li key={gameDetails.me.id}>
-              Vous êtes <b>???</b>
-            </li>
-            {otherPlayers.map(({ id, name, phraseToGuess }) => (
+            {players.map(({ isMe, id, name, phraseToGuess }) => (
               <li key={id}>
-                {name} est <b>{phraseToGuess || '…'}</b>
+                {isMe ? (
+                  <>
+                    Vous êtes <b>???</b>
+                  </>
+                ) : (
+                  <>
+                    {name} est <b>{phraseToGuess || '…'}</b>
+                  </>
+                )}
               </li>
             ))}
           </ul>
@@ -142,12 +150,13 @@ const Game = (): JSX.Element => {
       <>
         <h2>Participants :</h2>
         <ul>
-          <li key={gameDetails.me.id}>{me.name} (vous)</li>
-          {otherPlayers.map((player) => (
-            <li key={player.id}>{player.name}</li>
+          {players.map((player) => (
+            <li key={player.id}>
+              {`${player.name}${player.isMe ? ' (vous)' : ''}`}
+            </li>
           ))}
         </ul>
-        {me.isOwner ? (
+        {amIOwner ? (
           <Button onClick={enterWritingPhase}>Lancer la partie</Button>
         ) : (
           <p>En attente du lancement de la partie par l’hôte.</p>

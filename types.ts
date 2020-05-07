@@ -13,15 +13,14 @@ export type TSession = {
 
 export type TPlayer = {
   id: string;
+  isOwner: boolean;
   name: string;
-  isOwner: string;
   phraseToGuess?: string;
 };
 
 export type TGameForPlayer = {
   id: string;
-  me: TPlayer;
-  otherPlayers: Array<TPlayer>;
+  players: Array<TPlayer & { isMe: boolean }>;
   phase: GamePhase;
   playerToWritePhraseFor?: TPlayer;
 };
