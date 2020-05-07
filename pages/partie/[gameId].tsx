@@ -6,11 +6,12 @@ import {
   getGameDetails,
   GET_GAME_DETAILS_ERROR_MESSAGE,
   enterWritingPhase as _enterWritingPhase,
+  setPhraseToGuess as _setPhraseToGuess,
 } from '../../lib/api/games';
+import { registerInGame as _registerInGame } from '../../lib/api/me';
 import LoadingIndicator from '../../lib/components/global/LoadingIndicator';
-import PromptForName from '../../lib/components/partie|[gameId]/PromptForName';
 import Button from '../../lib/components/global/Button';
-import PromptForPhraseToGuess from '../../lib/components/partie|[gameId]/PromptForPhraseToGuess';
+import PromptForText from '../../lib/components/partie|[gameId]/PromptForText';
 
 const useGame = (
   gameId: string
@@ -18,9 +19,10 @@ const useGame = (
   boolean,
   string,
   boolean,
-  () => Promise<void>,
   TGameForPlayer,
-  () => Promise<void>
+  (name: string) => Promise<void>,
+  () => Promise<void>,
+  (phrase: string) => Promise<void>
 ] => {
   const [isLoading, setIsLoading] = useState(true);
   const [mainMessage, setMainMessage] = useState('');
@@ -30,7 +32,6 @@ const useGame = (
   const fetchGameDetails = async (): Promise<void> => {
     try {
       setIsLoading(true);
-      setIsPromptingForName(false);
       setGameDetails(await getGameDetails(gameId));
       setIsLoading(false);
     } catch (error) {
@@ -54,17 +55,27 @@ const useGame = (
     fetchGameDetails();
   }, []);
 
+  const registerInGame = async (name: string): Promise<void> => {
+    setGameDetails(await _registerInGame(gameId, name));
+    setIsPromptingForName(false);
+  };
+
   const enterWritingPhase = async (): Promise<void> => {
     setGameDetails(await _enterWritingPhase(gameId));
+  };
+
+  const setPhraseToGuess = async (phrase: string): Promise<void> => {
+    setGameDetails(await _setPhraseToGuess(gameId, phrase));
   };
 
   return [
     isLoading,
     mainMessage,
     isPromptingForName,
-    fetchGameDetails,
     gameDetails,
+    registerInGame,
     enterWritingPhase,
+    setPhraseToGuess,
   ];
 };
 
@@ -76,9 +87,10 @@ const Game = (): JSX.Element => {
     isLoading,
     mainMessage,
     isPromptingForName,
-    fetchGameDetails,
     gameDetails,
+    registerInGame,
     enterWritingPhase,
+    setPhraseToGuess,
   ] = useGame(gameId);
 
   if (isLoading) {
@@ -90,7 +102,13 @@ const Game = (): JSX.Element => {
   }
 
   if (isPromptingForName) {
-    return <PromptForName gameId={gameId} onSubmitSuccess={fetchGameDetails} />;
+    return (
+      <PromptForText
+        fieldId="input-player-name"
+        label="Votre nom :"
+        onSubmit={registerInGame}
+      />
+    );
   }
 
   if (gameDetails) {
@@ -112,10 +130,10 @@ const Game = (): JSX.Element => {
         );
       }
       return (
-        <PromptForPhraseToGuess
-          gameId={gameId}
-          playerNameToWritePhraseFor={playerToWritePhraseFor.name}
-          onSubmitSuccess={fetchGameDetails}
+        <PromptForText
+          fieldId="input-phrase-for-next-player-to-guess"
+          label={`Écrivez le post-it de ${playerToWritePhraseFor.name} :`}
+          onSubmit={setPhraseToGuess}
         />
       );
     }

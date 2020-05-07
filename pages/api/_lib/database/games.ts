@@ -28,26 +28,30 @@ const registerPlayer = async (
   sessionId: string,
   name: string,
   gameId: string
-): Promise<void> => {
+): Promise<TGameDatabase> => {
   const gamesCollection = await getCollection('games');
   const game = await getGame(gameId);
   const existingPlayer = getPlayer(game, sessionId);
   if (existingPlayer) {
-    gamesCollection.updateOne(
+    const response = await gamesCollection.findOneAndUpdate(
       { id: gameId, 'players.id': existingPlayer.id },
-      { $set: { 'players.$.name': name } }
+      { $set: { 'players.$.name': name } },
+      { returnOriginal: false }
     );
+    return response.value;
   } else {
     const newPlayerId = uuidv4();
-    gamesCollection.updateOne(
+    const response = gamesCollection.findOneAndUpdate(
       { id: gameId },
       {
         $push: {
           _sessions: { id: sessionId, playerId: newPlayerId },
           players: { id: newPlayerId, name },
         },
-      }
+      },
+      { returnOriginal: false }
     );
+    return (await response).value;
   }
 };
 

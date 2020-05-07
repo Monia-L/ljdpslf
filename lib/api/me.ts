@@ -1,6 +1,11 @@
 import { callApi } from '.';
+import { TGameForPlayer } from '../../types';
 
-const registerInGame = async (name: string, gameId: string): Promise<void> =>
-  callApi('me', 'PATCH', { name, gameId });
+const registerInGame = async (
+  gameId: string,
+  name: string
+): Promise<TGameForPlayer> => {
+  return (await callApi('me', 'PATCH', { gameId, name })).content;
+};
 
 export { registerInGame };
