@@ -1,6 +1,10 @@
 import { NowRequest, NowResponse } from '@now/node';
 
-import { getGame, updateGamePhase } from '../_lib/database/games';
+import {
+  getGame,
+  updateGamePhase,
+  setPhraseToGuess,
+} from '../_lib/database/games';
 import {
   isPlayerRegistered,
   getGameForPlayer,
@@ -12,12 +16,10 @@ export default async (
   req: NowRequest,
   res: NowResponse
 ): Promise<NowResponse> => {
-  const {
-    query: { id },
-  } = req;
+  const id = req.query.id as string;
   const { sessionId } = req.cookies;
   if (req.method === 'GET') {
-    const game = await getGame(id as string);
+    const game = await getGame(id);
     if (!isPlayerRegistered(game, sessionId)) {
       if (game.phase === GamePhase.WAITING_FOR_PLAYERS) {
         return res.status(403).json({
@@ -31,9 +33,13 @@ export default async (
     return res.status(200).json(getGameForPlayer(game, sessionId));
   }
   if (req.method === 'PATCH') {
-    const { phase } = req.body;
-    if (phase === GamePhase.WRITING_PHRASE_TO_GUESS) {
-      const game = await updateGamePhase(id as string, phase);
+    const { phase, phraseToGuess } = req.body;
+    if (phase && phase === GamePhase.WRITING_PHRASE_TO_GUESS) {
+      const game = await updateGamePhase(id, phase);
+      return res.status(200).json(getGameForPlayer(game, sessionId));
+    }
+    if (phraseToGuess) {
+      const game = await setPhraseToGuess(sessionId, id, phraseToGuess);
       return res.status(200).json(getGameForPlayer(game, sessionId));
     }
     return res.status(400).send(null);

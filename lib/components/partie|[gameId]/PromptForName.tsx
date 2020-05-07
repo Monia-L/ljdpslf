@@ -41,7 +41,7 @@ const PromptForName = ({ gameId, onSubmitSuccess }): JSX.Element => {
         name="name"
         type="text"
         required
-        minLength={2}
+        minLength={1}
         autoFocus
         value={name}
         onChange={({ target: { value } }): void => {

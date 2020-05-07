@@ -10,6 +10,7 @@ import {
 import LoadingIndicator from '../../lib/components/global/LoadingIndicator';
 import PromptForName from '../../lib/components/partie|[gameId]/PromptForName';
 import Button from '../../lib/components/global/Button';
+import PromptForPhraseToGuess from '../../lib/components/partie|[gameId]/PromptForPhraseToGuess';
 
 const useGame = (
   gameId: string
@@ -96,7 +97,27 @@ const Game = (): JSX.Element => {
     const { me, otherPlayers, phase, playerToWritePhraseFor } = gameDetails;
 
     if (phase === GamePhase.WRITING_PHRASE_TO_GUESS) {
-      return <h2>Écrivez le post-it de {playerToWritePhraseFor.name} :</h2>;
+      if (playerToWritePhraseFor.phraseToGuess) {
+        return (
+          <ul>
+            <li key={gameDetails.me.id}>
+              Vous êtes <b>???</b>
+            </li>
+            {otherPlayers.map(({ id, name, phraseToGuess }) => (
+              <li key={id}>
+                {name} est <b>{phraseToGuess || '…'}</b>
+              </li>
+            ))}
+          </ul>
+        );
+      }
+      return (
+        <PromptForPhraseToGuess
+          gameId={gameId}
+          playerNameToWritePhraseFor={playerToWritePhraseFor.name}
+          onSubmitSuccess={fetchGameDetails}
+        />
+      );
     }
 
     return (
@@ -108,8 +129,10 @@ const Game = (): JSX.Element => {
             <li key={player.id}>{player.name}</li>
           ))}
         </ul>
-        {me.isOwner && (
+        {me.isOwner ? (
           <Button onClick={enterWritingPhase}>Lancer la partie</Button>
+        ) : (
+          <p>En attente du lancement de la partie par l’hôte.</p>
         )}
       </>
     );

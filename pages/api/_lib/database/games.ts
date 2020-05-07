@@ -1,7 +1,10 @@
 import { v4 as uuidv4 } from 'uuid';
 
 import { getCollection } from './utils';
-import { getPlayer } from '../../../../lib/helpers/games';
+import {
+  getPlayer,
+  getPlayerToWritePhraseFor,
+} from '../../../../lib/helpers/games';
 import { GamePhase, TGameDatabase } from '../../../../types';
 
 const createGame = async (ownerSessionId: string): Promise<TGameDatabase> => {
@@ -61,4 +64,29 @@ const updateGamePhase = async (
   return response.value;
 };
 
-export { createGame, registerPlayer, getGame, updateGamePhase };
+const setPhraseToGuess = async (
+  sessionId: string,
+  gameId: string,
+  phraseToGuess: string
+): Promise<TGameDatabase> => {
+  const gamesCollection = await getCollection('games');
+  const game = await getGame(gameId);
+  const playerWithPhraseToGuess = getPlayerToWritePhraseFor(
+    game.players,
+    getPlayer(game, sessionId).id
+  );
+  const response = await gamesCollection.findOneAndUpdate(
+    { id: gameId, 'players.id': playerWithPhraseToGuess.id },
+    { $set: { 'players.$.phraseToGuess': phraseToGuess } },
+    { returnOriginal: false }
+  );
+  return response.value;
+};
+
+export {
+  createGame,
+  registerPlayer,
+  getGame,
+  updateGamePhase,
+  setPhraseToGuess,
+};

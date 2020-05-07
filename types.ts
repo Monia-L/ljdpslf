@@ -15,6 +15,7 @@ export type TPlayer = {
   id: string;
   name: string;
   isOwner: string;
+  phraseToGuess?: string;
 };
 
 export type TGameForPlayer = {

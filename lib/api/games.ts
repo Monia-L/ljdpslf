@@ -27,4 +27,9 @@ const enterWritingPhase = async (id: string): Promise<TGameForPlayer> => {
   ).content;
 };
 
-export { createGame, getGameDetails, enterWritingPhase };
+const setPhraseToGuess = async (
+  id: string,
+  phraseToGuess: string
+): Promise<void> => callApi(`games/${id}`, 'PATCH', { phraseToGuess });
+
+export { createGame, getGameDetails, enterWritingPhase, setPhraseToGuess };
