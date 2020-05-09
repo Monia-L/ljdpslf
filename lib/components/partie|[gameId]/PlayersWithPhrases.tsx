@@ -1,4 +1,5 @@
 import { TPlayerForPlayer } from '../../../types';
+import Button from '../global/Button';
 
 const PlayersWithPhrases = ({
   players,
@@ -9,9 +10,9 @@ const PlayersWithPhrases = ({
     {players.map(({ isMe, id, name, phraseToGuess, isTheirTurnToGuess }) => (
       <li key={id}>
         {isTheirTurnToGuess && (
-          <span className="label-turn-to-guess">{`À ${
+          <i className="label-turn-to-guess">{`À ${
             isMe ? 'vous' : name
-          } de deviner`}</span>
+          } de deviner…`}</i>
         )}
         <div className="name-and-phrase">
           {isMe ? (
@@ -22,6 +23,12 @@ const PlayersWithPhrases = ({
             <>
               {name} est <b>{phraseToGuess || '…'}</b>
             </>
+          )}
+          {isTheirTurnToGuess && isMe && (
+            <div className="actions">
+              <Button>J’ai fini mon tour</Button>
+              <Button>J’ai deviné</Button>
+            </div>
           )}
         </div>
       </li>
@@ -36,18 +43,23 @@ const PlayersWithPhrases = ({
       }
 
       .label-turn-to-guess {
-        background-color: lightgray;
+        background-color: #f4f4e4;
         display: inline-block;
-        padding: 6px 10px;
+        padding: 8px 12px;
         font-size: 18px;
         font-variant: all-small-caps;
-        font-style: italic;
       }
 
       .name-and-phrase {
-        border: 3px solid lightgray;
-        padding: 8px 10px;
-        background: #ffff99;
+        padding: 12px;
+        background: #feff9c;
+      }
+
+      .actions {
+        margin-top: 12px;
+        display: grid;
+        grid-gap: 12px;
+        text-align: center;
       }
     `}</style>
   </ul>

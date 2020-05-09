@@ -82,7 +82,7 @@ const AppLogo = (): JSX.Element => (
           height: 80px;
           border-radius: 40px;
           border: 3px solid black;
-          background-color: #ffff99;
+          background-color: #feff9c;
           display: flex;
           justify-content: center;
           align-items: center;
