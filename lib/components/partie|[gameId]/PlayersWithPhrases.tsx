@@ -21,42 +21,51 @@ const PlayersWithPhrases = ({
 
   return (
     <ul>
-      {players.map(({ isMe, id, name, phraseToGuess, isTheirTurnToGuess }) => (
-        <li key={id}>
-          {isTheirTurnToGuess && (
-            <i className="label-turn-to-guess">{`À ${
-              isMe ? 'vous' : name
-            } de deviner…`}</i>
-          )}
-          <div className="name-and-phrase">
-            {isMe ? (
-              <>
-                Vous êtes <b>???</b>
-              </>
-            ) : (
-              <>
-                {name} est <b>{phraseToGuess || '…'}</b>
-              </>
+      {players.map(
+        ({
+          isMe,
+          id,
+          name,
+          phraseToGuess,
+          isTheirTurnToGuess,
+          isPhraseGuessed,
+        }) => (
+          <li key={id}>
+            {isTheirTurnToGuess && !isPhraseGuessed && (
+              <i className="label-turn-to-guess">{`À ${
+                isMe ? 'vous' : name
+              } de deviner…`}</i>
             )}
-            {isTheirTurnToGuess && isMe && (
-              <div className="actions">
-                {isActionLoading ? (
-                  <LoadingIndicator />
-                ) : (
-                  <>
-                    <Button onClick={callAction(passTurnToGuess)}>
-                      J’ai fini mon tour
-                    </Button>
-                    <Button onClick={callAction(setPhraseAsGuessed)}>
-                      J’ai deviné
-                    </Button>
-                  </>
-                )}
-              </div>
-            )}
-          </div>
-        </li>
-      ))}
+            <div className="name-and-phrase">
+              {isMe ? (
+                <>
+                  Vous êtes <b>{phraseToGuess || '???'}</b>
+                </>
+              ) : (
+                <>
+                  {name} est <b>{phraseToGuess || '…'}</b>
+                </>
+              )}
+              {isMe && isTheirTurnToGuess && !isPhraseGuessed && (
+                <div className="actions">
+                  {isActionLoading ? (
+                    <LoadingIndicator />
+                  ) : (
+                    <>
+                      <Button onClick={callAction(passTurnToGuess)}>
+                        J’ai fini mon tour
+                      </Button>
+                      <Button onClick={callAction(setPhraseAsGuessed)}>
+                        J’ai deviné
+                      </Button>
+                    </>
+                  )}
+                </div>
+              )}
+            </div>
+          </li>
+        )
+      )}
 
       <style jsx>{`
         ul {

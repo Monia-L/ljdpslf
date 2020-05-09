@@ -136,7 +136,7 @@ const Game = (): JSX.Element => {
       players.find(({ isOwner, isMe }) => isOwner && isMe)
     );
 
-    if (phase === GamePhase.GUESSING) {
+    if (phase === GamePhase.GUESSING || phase === GamePhase.COMPLETED) {
       return (
         <PlayersWithPhrases
           players={players}

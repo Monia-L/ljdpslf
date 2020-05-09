@@ -81,10 +81,9 @@ const setTurnToGuessToNextPlayer = async (
   const playerDoneGuessing = players.find(
     ({ isTheirTurnToGuess }) => isTheirTurnToGuess
   );
-  const nextPlayer = playerDoneGuessing
-    ? getNextPlayer(players, playerDoneGuessing.id)
-    : null;
-  const nextPlayerId = nextPlayer ? nextPlayer.id : players[0].id;
+  const nextPlayerId = playerDoneGuessing
+    ? getNextPlayer(players, playerDoneGuessing.id).id
+    : players[0].id;
   const gamesCollection = await getCollection('games');
   await setTurnToGuessToFalseForAllPlayers(game.id);
   return (
@@ -170,6 +169,7 @@ const setPhraseAsGuessedForPlayer = async (
     )
   ).value;
 };
+
 const setPhraseAsGuessedForCurrentPlayer = async (
   sessionId: string,
   gameId: string

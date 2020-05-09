@@ -10,6 +10,19 @@ const getPlayerFromSessionId = (
     : null;
 };
 
+const getIndexOfFirstPlayerWithPhraseNotGuessed = (
+  players: Array<TPlayer>,
+  index: number
+): number => {
+  if (!players[index].isPhraseGuessed) {
+    return index;
+  }
+  return getIndexOfFirstPlayerWithPhraseNotGuessed(
+    players,
+    (index + 1) % players.length
+  );
+};
+
 const getNextPlayer = (
   players: Array<TPlayer>,
   currentPlayerId: string
@@ -18,7 +31,11 @@ const getNextPlayer = (
     ({ id }) => id === currentPlayerId
   );
   const nextPlayerIndex = (currentPlayerIndex + 1) % players.length;
-  return players[nextPlayerIndex];
+  const indexOfFirstPlayerWithPhraseNotGuessed = getIndexOfFirstPlayerWithPhraseNotGuessed(
+    players,
+    nextPlayerIndex
+  );
+  return players[indexOfFirstPlayerWithPhraseNotGuessed];
 };
 
 const getGameForPlayer = (
@@ -31,7 +48,12 @@ const getGameForPlayer = (
     players: game.players.map((player) => ({
       ...player,
       ...(player.id === currentPlayer.id
-        ? { isMe: true, phraseToGuess: undefined }
+        ? {
+            isMe: true,
+            phraseToGuess: player.isPhraseGuessed
+              ? player.phraseToGuess
+              : undefined,
+          }
         : { isMe: false }),
     })),
     phase: game.phase,
