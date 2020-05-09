@@ -4,12 +4,17 @@ import {
   getGame,
   updateGamePhase,
   setPhraseToGuess,
+  passTurnToGuess,
+  setPhraseAsGuessedForCurrentPlayer,
 } from '../_lib/database/games';
 import {
   isPlayerRegistered,
   getGameForPlayer,
 } from '../../../lib/helpers/games';
-import { GET_GAME_DETAILS_ERROR_MESSAGE } from '../../../lib/api/games';
+import {
+  GET_GAME_DETAILS_ERROR_MESSAGE,
+  PATCH_GAME_ACTION,
+} from '../../../lib/api/games';
 import { GamePhase } from '../../../types';
 
 export default async (
@@ -33,6 +38,26 @@ export default async (
     return res.status(200).json(getGameForPlayer(game, sessionId));
   }
   if (req.method === 'PATCH') {
+    const action = req.query.action as string;
+    if (action) {
+      if (action === PATCH_GAME_ACTION.PASS_TURN_TO_GUESS) {
+        res
+          .status(200)
+          .json(
+            getGameForPlayer(await passTurnToGuess(sessionId, id), sessionId)
+          );
+      }
+      if (action === PATCH_GAME_ACTION.SET_PHRASE_AS_GUESSED) {
+        res
+          .status(200)
+          .json(
+            getGameForPlayer(
+              await setPhraseAsGuessedForCurrentPlayer(sessionId, id),
+              sessionId
+            )
+          );
+      }
+    }
     const { phase, phraseToGuess } = req.body;
     if (phase) {
       const game = await updateGamePhase(id, phase);

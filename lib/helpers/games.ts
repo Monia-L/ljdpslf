@@ -49,13 +49,20 @@ const isPlayerRegistered = (
   return Boolean(player && player.name);
 };
 
-const doAllPlayersHaveAPhraseToGuess = (game: TGameDatabase): boolean => {
-  return game.players.reduce(
-    (doAllPlayersSoFarHaveAPhraseToGuess: boolean, player) =>
-      Boolean(doAllPlayersSoFarHaveAPhraseToGuess && player.phraseToGuess),
+const doAllPlayersHaveATruthyValueForKey = (
+  players: Array<TPlayer>,
+  key: 'phraseToGuess' | 'isPhraseGuessed'
+): boolean =>
+  players.reduce(
+    (allTrueSoFar: boolean, player) => Boolean(allTrueSoFar && player[key]),
     true
   );
-};
+
+const doAllPlayersHaveAPhraseToGuess = (players: Array<TPlayer>): boolean =>
+  doAllPlayersHaveATruthyValueForKey(players, 'phraseToGuess');
+
+const haveAllPlayersGuessedTheirPhrase = (players: Array<TPlayer>): boolean =>
+  doAllPlayersHaveATruthyValueForKey(players, 'isPhraseGuessed');
 
 export {
   getGameForPlayer,
@@ -63,4 +70,5 @@ export {
   isPlayerRegistered,
   getNextPlayer,
   doAllPlayersHaveAPhraseToGuess,
+  haveAllPlayersGuessedTheirPhrase,
 };

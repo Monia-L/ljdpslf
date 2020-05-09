@@ -17,6 +17,7 @@ export type TPlayer = {
   name: string;
   phraseToGuess?: string;
   isTheirTurnToGuess?: boolean;
+  isPhraseGuessed?: boolean;
 };
 
 export type TPlayerForPlayer = TPlayer & { isMe: boolean };

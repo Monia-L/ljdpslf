@@ -5,8 +5,9 @@ import {
   getPlayerFromSessionId,
   getNextPlayer,
   doAllPlayersHaveAPhraseToGuess,
+  haveAllPlayersGuessedTheirPhrase,
 } from '../../../../lib/helpers/games';
-import { GamePhase, TGameDatabase, TPlayer } from '../../../../types';
+import { GamePhase, TGameDatabase } from '../../../../types';
 
 const createGame = async (ownerSessionId: string): Promise<TGameDatabase> => {
   const gamesCollection = await getCollection('games');
@@ -134,9 +135,54 @@ const setPhraseToGuess = async (
       { returnOriginal: false }
     )
   ).value;
-  return doAllPlayersHaveAPhraseToGuess(updatedGame)
+  return doAllPlayersHaveAPhraseToGuess(updatedGame.players)
     ? updateGamePhase(updatedGame.id, GamePhase.GUESSING)
     : updatedGame;
+};
+
+const passTurnToGuess = async (
+  sessionId: string,
+  gameId: string
+): Promise<TGameDatabase> => {
+  const game = await getGame(gameId);
+  const currentPlayer = getPlayerFromSessionId(game, sessionId);
+  const playerWithTurnToGuess = game.players.find(
+    (player) => player.isTheirTurnToGuess
+  );
+  if (currentPlayer === playerWithTurnToGuess) {
+    const updatedGame = await setTurnToGuessToNextPlayer(game);
+    return haveAllPlayersGuessedTheirPhrase(updatedGame.players)
+      ? updateGamePhase(updatedGame.id, GamePhase.COMPLETED)
+      : updatedGame;
+  }
+};
+
+const setPhraseAsGuessedForPlayer = async (
+  gameId: string,
+  playerId: string
+): Promise<TGameDatabase> => {
+  const gamesCollection = await getCollection('games');
+  return (
+    await gamesCollection.findOneAndUpdate(
+      { id: gameId, 'players.id': playerId },
+      { $set: { 'players.$.isPhraseGuessed': true } },
+      { returnOriginal: false }
+    )
+  ).value;
+};
+const setPhraseAsGuessedForCurrentPlayer = async (
+  sessionId: string,
+  gameId: string
+): Promise<TGameDatabase> => {
+  const game = await getGame(gameId);
+  const currentPlayer = getPlayerFromSessionId(game, sessionId);
+  const playerWithTurnToGuess = game.players.find(
+    (player) => player.isTheirTurnToGuess
+  );
+  if (currentPlayer === playerWithTurnToGuess) {
+    await setPhraseAsGuessedForPlayer(gameId, currentPlayer.id);
+    return setTurnToGuessToNextPlayer(game);
+  }
 };
 
 export {
@@ -145,4 +191,6 @@ export {
   getGame,
   updateGamePhase,
   setPhraseToGuess,
+  passTurnToGuess,
+  setPhraseAsGuessedForCurrentPlayer,
 };

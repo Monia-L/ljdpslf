@@ -7,6 +7,8 @@ import {
   GET_GAME_DETAILS_ERROR_MESSAGE,
   enterWritingPhase as _enterWritingPhase,
   setPhraseToGuess as _setPhraseToGuess,
+  passTurnToGuess as _passTurnToGuess,
+  setPhraseAsGuessed as _setPhraseAsGuessed,
 } from '../../lib/api/games';
 import { registerInGame as _registerInGame } from '../../lib/api/me';
 import LoadingIndicator from '../../lib/components/global/LoadingIndicator';
@@ -23,7 +25,9 @@ const useGame = (
   TGameForPlayer,
   (name: string) => Promise<void>,
   () => Promise<void>,
-  (phrase: string) => Promise<void>
+  (phrase: string) => Promise<void>,
+  () => Promise<void>,
+  () => Promise<void>
 ] => {
   const [isLoading, setIsLoading] = useState(true);
   const [mainMessage, setMainMessage] = useState('');
@@ -71,6 +75,14 @@ const useGame = (
     setGameDetails(await _setPhraseToGuess(gameId, phrase));
   };
 
+  const passTurnToGuess = async (): Promise<void> => {
+    setGameDetails(await _passTurnToGuess(gameId));
+  };
+
+  const setPhraseAsGuessed = async (): Promise<void> => {
+    setGameDetails(await _setPhraseAsGuessed(gameId));
+  };
+
   return [
     isLoading,
     mainMessage,
@@ -79,6 +91,8 @@ const useGame = (
     registerInGame,
     enterWritingPhase,
     setPhraseToGuess,
+    passTurnToGuess,
+    setPhraseAsGuessed,
   ];
 };
 
@@ -94,6 +108,8 @@ const Game = (): JSX.Element => {
     registerInGame,
     enterWritingPhase,
     setPhraseToGuess,
+    passTurnToGuess,
+    setPhraseAsGuessed,
   ] = useGame(gameId);
 
   if (isLoading) {
@@ -121,7 +137,13 @@ const Game = (): JSX.Element => {
     );
 
     if (phase === GamePhase.GUESSING) {
-      return <PlayersWithPhrases players={players} />;
+      return (
+        <PlayersWithPhrases
+          players={players}
+          passTurnToGuess={passTurnToGuess}
+          setPhraseAsGuessed={setPhraseAsGuessed}
+        />
+      );
     }
     if (phase === GamePhase.WRITING_PHRASE_TO_GUESS) {
       if (playerToWritePhraseFor.phraseToGuess) {

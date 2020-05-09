@@ -34,4 +34,34 @@ const setPhraseToGuess = async (
   return (await callApi(`games/${id}`, 'PATCH', { phraseToGuess })).content;
 };
 
-export { createGame, getGameDetails, enterWritingPhase, setPhraseToGuess };
+export enum PATCH_GAME_ACTION {
+  PASS_TURN_TO_GUESS = 'pass-turn-to-guess',
+  SET_PHRASE_AS_GUESSED = 'set-phrase-as-guessed',
+}
+
+const passTurnToGuess = async (id: string): Promise<TGameForPlayer> => {
+  return (
+    await callApi(
+      `games/${id}?action=${PATCH_GAME_ACTION.PASS_TURN_TO_GUESS}`,
+      'PATCH'
+    )
+  ).content;
+};
+
+const setPhraseAsGuessed = async (id: string): Promise<TGameForPlayer> => {
+  return (
+    await callApi(
+      `games/${id}?action=${PATCH_GAME_ACTION.SET_PHRASE_AS_GUESSED}`,
+      'PATCH'
+    )
+  ).content;
+};
+
+export {
+  createGame,
+  getGameDetails,
+  enterWritingPhase,
+  setPhraseToGuess,
+  passTurnToGuess,
+  setPhraseAsGuessed,
+};
