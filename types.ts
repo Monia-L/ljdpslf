@@ -16,11 +16,14 @@ export type TPlayer = {
   isOwner: boolean;
   name: string;
   phraseToGuess?: string;
+  isTheirTurnToGuess?: boolean;
 };
+
+export type TPlayerForPlayer = TPlayer & { isMe: boolean };
 
 export type TGameForPlayer = {
   id: string;
-  players: Array<TPlayer & { isMe: boolean }>;
+  players: Array<TPlayerForPlayer>;
   phase: GamePhase;
   playerToWritePhraseFor?: TPlayer;
 };

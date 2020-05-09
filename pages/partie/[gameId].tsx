@@ -12,6 +12,7 @@ import { registerInGame as _registerInGame } from '../../lib/api/me';
 import LoadingIndicator from '../../lib/components/global/LoadingIndicator';
 import Button from '../../lib/components/global/Button';
 import PromptForText from '../../lib/components/partie|[gameId]/PromptForText';
+import PlayersAndPhrases from '../../lib/components/partie|[gameId]/PlayersAndPhrases';
 
 const useGame = (
   gameId: string
@@ -117,25 +118,12 @@ const Game = (): JSX.Element => {
       players.find(({ isOwner, isMe }) => isOwner && isMe)
     );
 
+    if (phase === GamePhase.GUESSING) {
+      return <PlayersAndPhrases players={players} />;
+    }
     if (phase === GamePhase.WRITING_PHRASE_TO_GUESS) {
       if (playerToWritePhraseFor.phraseToGuess) {
-        return (
-          <ul>
-            {players.map(({ isMe, id, name, phraseToGuess }) => (
-              <li key={id}>
-                {isMe ? (
-                  <>
-                    Vous êtes <b>???</b>
-                  </>
-                ) : (
-                  <>
-                    {name} est <b>{phraseToGuess || '…'}</b>
-                  </>
-                )}
-              </li>
-            ))}
-          </ul>
-        );
+        return <PlayersAndPhrases players={players} />;
       }
       return (
         <PromptForText

@@ -10,7 +10,7 @@ const getPlayerFromSessionId = (
     : null;
 };
 
-const getPlayerToWritePhraseFor = (
+const getNextPlayer = (
   players: Array<TPlayer>,
   currentPlayerId: string
 ): TPlayer => {
@@ -36,10 +36,7 @@ const getGameForPlayer = (
     })),
     phase: game.phase,
     ...(game.phase === GamePhase.WRITING_PHRASE_TO_GUESS && {
-      playerToWritePhraseFor: getPlayerToWritePhraseFor(
-        game.players,
-        currentPlayer.id
-      ),
+      playerToWritePhraseFor: getNextPlayer(game.players, currentPlayer.id),
     }),
   };
 };
@@ -52,9 +49,18 @@ const isPlayerRegistered = (
   return Boolean(player && player.name);
 };
 
+const doAllPlayersHaveAPhraseToGuess = (game: TGameDatabase): boolean => {
+  return game.players.reduce(
+    (doAllPlayersSoFarHaveAPhraseToGuess: boolean, player) =>
+      Boolean(doAllPlayersSoFarHaveAPhraseToGuess && player.phraseToGuess),
+    true
+  );
+};
+
 export {
   getGameForPlayer,
   getPlayerFromSessionId,
   isPlayerRegistered,
-  getPlayerToWritePhraseFor,
+  getNextPlayer,
+  doAllPlayersHaveAPhraseToGuess,
 };

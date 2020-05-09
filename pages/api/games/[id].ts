@@ -34,7 +34,7 @@ export default async (
   }
   if (req.method === 'PATCH') {
     const { phase, phraseToGuess } = req.body;
-    if (phase && phase === GamePhase.WRITING_PHRASE_TO_GUESS) {
+    if (phase) {
       const game = await updateGamePhase(id, phase);
       return res.status(200).json(getGameForPlayer(game, sessionId));
     }
