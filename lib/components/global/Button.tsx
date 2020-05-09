@@ -10,14 +10,15 @@ const Button = ({ children, type, isLoading, onClick }): JSX.Element =>
 
       <style jsx>{`
         button {
-          font-size: 16px;
-          color: black;
-          padding: 9px;
           margin: 0;
+          padding: 9px;
           border: 3px solid black;
+          border-radius: 9px;
           background: ${isLoading ? 'lightgray' : 'white'};
+          font-size: 16px;
           font-weight: bold;
           text-transform: uppercase;
+          color: black;
         }
 
         button:active {
