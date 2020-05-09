@@ -3,6 +3,7 @@ import { setCookie, parseCookies } from 'nookies';
 import PropTypes from 'prop-types';
 import { v4 as uuidv4 } from 'uuid';
 
+import AppLogo from '../lib/components/_app/AppLogo';
 import '../lib/styles.css';
 
 const App = ({ Component, pageProps }): JSX.Element => {
@@ -12,6 +13,9 @@ const App = ({ Component, pageProps }): JSX.Element => {
         <title>Le jeu des post-it sur le front</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      <header>
+        <AppLogo />
+      </header>
       <main className="container">
         <Component {...pageProps} />
       </main>
