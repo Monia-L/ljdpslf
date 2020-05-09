@@ -1,6 +1,6 @@
 import { TPlayerForPlayer } from '../../../types';
 
-const PlayersAndPhrases = ({
+const PlayersWithPhrases = ({
   players,
 }: {
   players: Array<TPlayerForPlayer>;
@@ -19,7 +19,21 @@ const PlayersAndPhrases = ({
         )}
       </li>
     ))}
+
+    <style jsx>{`
+      ul {
+        list-style: none;
+        display: grid;
+        grid-gap: 14px;
+      }
+
+      li {
+        border: 3px solid lightgray;
+        padding: 8px 10px;
+        background: #ffff99;
+      }
+    `}</style>
   </ul>
 );
 
-export default PlayersAndPhrases;
+export default PlayersWithPhrases;

@@ -27,7 +27,8 @@ body {
 
 .container {
   margin: 0 14px;
-  max-width: 292px;
+  width: 292px;
+  text-align: center;
 }
 
 h2 {
@@ -35,7 +36,8 @@ h2 {
 }
 
 ul {
-  padding-inline-start: 20px;
+  padding-inline-start: 0;
+  list-style-position: inside;
 }
 
 form {

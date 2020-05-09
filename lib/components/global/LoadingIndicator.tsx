@@ -1,4 +1,6 @@
-const LoadingIndicator = (): JSX.Element => (
+import PropTypes from 'prop-types';
+
+const LoadingIndicator = ({ center }): JSX.Element => (
   <span className="wrapper">
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -26,11 +28,21 @@ const LoadingIndicator = (): JSX.Element => (
     <style jsx>{`
       .wrapper {
         min-height: 42px;
+        width: 100%;
         display: flex;
         align-items: center;
+        justify-content: ${center ? 'center' : 'initial'};
       }
     `}</style>
   </span>
 );
+
+LoadingIndicator.propTypes = {
+  center: PropTypes.bool,
+};
+
+LoadingIndicator.defaultProps = {
+  center: true,
+};
 
 export default LoadingIndicator;

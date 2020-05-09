@@ -12,7 +12,7 @@ import { registerInGame as _registerInGame } from '../../lib/api/me';
 import LoadingIndicator from '../../lib/components/global/LoadingIndicator';
 import Button from '../../lib/components/global/Button';
 import PromptForText from '../../lib/components/partie|[gameId]/PromptForText';
-import PlayersAndPhrases from '../../lib/components/partie|[gameId]/PlayersAndPhrases';
+import PlayersWithPhrases from '../../lib/components/partie|[gameId]/PlayersWithPhrases';
 
 const useGame = (
   gameId: string
@@ -62,7 +62,9 @@ const useGame = (
   };
 
   const enterWritingPhase = async (): Promise<void> => {
+    setIsLoading(true);
     setGameDetails(await _enterWritingPhase(gameId));
+    setIsLoading(false);
   };
 
   const setPhraseToGuess = async (phrase: string): Promise<void> => {
@@ -119,11 +121,11 @@ const Game = (): JSX.Element => {
     );
 
     if (phase === GamePhase.GUESSING) {
-      return <PlayersAndPhrases players={players} />;
+      return <PlayersWithPhrases players={players} />;
     }
     if (phase === GamePhase.WRITING_PHRASE_TO_GUESS) {
       if (playerToWritePhraseFor.phraseToGuess) {
-        return <PlayersAndPhrases players={players} />;
+        return <PlayersWithPhrases players={players} />;
       }
       return (
         <PromptForText

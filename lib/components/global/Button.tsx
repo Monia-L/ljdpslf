@@ -3,7 +3,7 @@ import LoadingIndicator from './LoadingIndicator';
 
 const Button = ({ children, type, isLoading, onClick }): JSX.Element =>
   isLoading ? (
-    <LoadingIndicator />
+    <LoadingIndicator center={type !== 'submit'} />
   ) : (
     <button type={type} disabled={isLoading} onClick={onClick}>
       {children}
