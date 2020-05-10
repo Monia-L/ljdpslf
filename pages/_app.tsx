@@ -13,12 +13,29 @@ const App = ({ Component, pageProps }): JSX.Element => {
         <title>Le jeu des post-it sur le front</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <header>
-        <AppLogo />
-      </header>
-      <main className="container">
-        <Component {...pageProps} />
-      </main>
+      <div className="container">
+        <header>
+          <nav>
+            <AppLogo />
+          </nav>
+        </header>
+        <main>
+          <div>
+            <Component {...pageProps} />
+          </div>
+        </main>
+
+        <style jsx>{`
+          main {
+            width: 292px;
+            margin: 0 14px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+          }
+        `}</style>
+      </div>
     </>
   );
 };

@@ -76,6 +76,7 @@ const PlayersWithPhrases = ({
 
       <style jsx>{`
         ul {
+          margin-top: 0;
           list-style: none;
           display: grid;
           grid-gap: 14px;

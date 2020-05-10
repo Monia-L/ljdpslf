@@ -74,12 +74,9 @@ const AppLogo = (): JSX.Element => (
 
       <style jsx>{`
         a {
-          position: fixed;
-          left: 50%;
-          transform: translateX(-50%);
-          top: 24px;
-          width: 80px;
-          height: 80px;
+          margin: 20px auto;
+          width: 72px;
+          height: 72px;
           border-radius: 40px;
           border: 3px solid black;
           background-color: #feff9c;
@@ -89,8 +86,8 @@ const AppLogo = (): JSX.Element => (
         }
 
         svg {
-          width: 58px;
-          height: 58px;
+          width: 52px;
+          height: 52px;
         }
       `}</style>
     </a>
