@@ -8,6 +8,7 @@ import {
   haveAllPlayersGuessedTheirPhrase,
 } from '../../../../lib/helpers/games';
 import { GamePhase, TGameDatabase } from '../../../../types';
+import { sendGameUpdateToPlayers } from '../client-subscriptions/games';
 
 const createGame = async (ownerSessionId: string): Promise<TGameDatabase> => {
   const gamesCollection = await getCollection('games');
@@ -35,25 +36,31 @@ const registerPlayer = async (
   const game = await getGame(gameId);
   const existingPlayer = getPlayerFromSessionId(game, sessionId);
   if (existingPlayer) {
-    const response = await gamesCollection.findOneAndUpdate(
-      { id: gameId, 'players.id': existingPlayer.id },
-      { $set: { 'players.$.name': name } },
-      { returnOriginal: false }
-    );
-    return response.value;
+    const updatedGame = (
+      await gamesCollection.findOneAndUpdate(
+        { id: gameId, 'players.id': existingPlayer.id },
+        { $set: { 'players.$.name': name } },
+        { returnOriginal: false }
+      )
+    ).value;
+    sendGameUpdateToPlayers(updatedGame);
+    return updatedGame;
   } else {
     const newPlayerId = uuidv4();
-    const response = await gamesCollection.findOneAndUpdate(
-      { id: gameId },
-      {
-        $push: {
-          _sessions: { id: sessionId, playerId: newPlayerId },
-          players: { id: newPlayerId, name },
+    const updatedGame = (
+      await gamesCollection.findOneAndUpdate(
+        { id: gameId },
+        {
+          $push: {
+            _sessions: { id: sessionId, playerId: newPlayerId },
+            players: { id: newPlayerId, name },
+          },
         },
-      },
-      { returnOriginal: false }
-    );
-    return response.value;
+        { returnOriginal: false }
+      )
+    ).value;
+    sendGameUpdateToPlayers(updatedGame);
+    return updatedGame;
   }
 };
 
@@ -86,7 +93,7 @@ const setTurnToGuessToNextPlayer = async (
     : players[0].id;
   const gamesCollection = await getCollection('games');
   await setTurnToGuessToFalseForAllPlayers(game.id);
-  return (
+  const updatedGame = (
     await gamesCollection.findOneAndUpdate(
       { id: game.id, 'players.id': nextPlayerId },
       {
@@ -97,6 +104,8 @@ const setTurnToGuessToNextPlayer = async (
       { returnOriginal: false }
     )
   ).value;
+  sendGameUpdateToPlayers(updatedGame);
+  return updatedGame;
 };
 
 const updateGamePhase = async (
@@ -111,6 +120,7 @@ const updateGamePhase = async (
       { returnOriginal: false }
     )
   ).value;
+  sendGameUpdateToPlayers(updatedGame);
   return updatedGame.phase === GamePhase.GUESSING
     ? setTurnToGuessToNextPlayer(updatedGame)
     : updatedGame;
@@ -134,6 +144,7 @@ const setPhraseToGuess = async (
       { returnOriginal: false }
     )
   ).value;
+  sendGameUpdateToPlayers(updatedGame);
   return doAllPlayersHaveAPhraseToGuess(updatedGame.players)
     ? updateGamePhase(updatedGame.id, GamePhase.GUESSING)
     : updatedGame;
@@ -150,6 +161,7 @@ const passTurnToGuess = async (
   );
   if (currentPlayer === playerWithTurnToGuess) {
     const updatedGame = await setTurnToGuessToNextPlayer(game);
+    sendGameUpdateToPlayers(updatedGame);
     return haveAllPlayersGuessedTheirPhrase(updatedGame.players)
       ? updateGamePhase(updatedGame.id, GamePhase.COMPLETED)
       : updatedGame;
@@ -161,13 +173,15 @@ const setPhraseAsGuessedForPlayer = async (
   playerId: string
 ): Promise<TGameDatabase> => {
   const gamesCollection = await getCollection('games');
-  return (
+  const updatedGame = (
     await gamesCollection.findOneAndUpdate(
       { id: gameId, 'players.id': playerId },
       { $set: { 'players.$.isPhraseGuessed': true } },
       { returnOriginal: false }
     )
   ).value;
+  sendGameUpdateToPlayers(updatedGame);
+  return updatedGame;
 };
 
 const setPhraseAsGuessedForCurrentPlayer = async (

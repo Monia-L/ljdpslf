@@ -28,12 +28,14 @@ const useGame = (
   () => Promise<void>,
   (phrase: string) => Promise<void>,
   () => Promise<void>,
-  () => Promise<void>
+  () => Promise<void>,
+  boolean
 ] => {
   const [isLoading, setIsLoading] = useState(true);
   const [mainMessage, setMainMessage] = useState('');
   const [isPromptingForName, setIsPromptingForName] = useState(false);
   const [gameDetails, setGameDetails] = useState(null);
+  const [isActionLoading, setIsActionLoading] = useState(false);
 
   const fetchGameDetails = async (): Promise<void> => {
     try {
@@ -81,11 +83,15 @@ const useGame = (
   };
 
   const passTurnToGuess = async (): Promise<void> => {
+    setIsActionLoading(true);
     setGameDetails(await _passTurnToGuess(gameId));
+    setIsActionLoading(false);
   };
 
   const setPhraseAsGuessed = async (): Promise<void> => {
+    setIsActionLoading(true);
     setGameDetails(await _setPhraseAsGuessed(gameId));
+    setIsActionLoading(false);
   };
 
   return [
@@ -98,6 +104,7 @@ const useGame = (
     setPhraseToGuess,
     passTurnToGuess,
     setPhraseAsGuessed,
+    isActionLoading,
   ];
 };
 
@@ -115,6 +122,7 @@ const Game = (): JSX.Element => {
     setPhraseToGuess,
     passTurnToGuess,
     setPhraseAsGuessed,
+    isActionLoading,
   ] = useGame(gameId);
 
   if (isLoading) {
@@ -145,6 +153,7 @@ const Game = (): JSX.Element => {
       return (
         <PlayersWithPhrases
           players={players}
+          isActionLoading={isActionLoading}
           passTurnToGuess={passTurnToGuess}
           setPhraseAsGuessed={setPhraseAsGuessed}
         />
