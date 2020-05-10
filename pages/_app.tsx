@@ -27,8 +27,8 @@ const App = ({ Component, pageProps }): JSX.Element => {
 
         <style jsx>{`
           main {
-            width: 292px;
-            margin: 0 14px;
+            width: 280px;
+            margin: 0 20px;
             flex-grow: 1;
             display: flex;
             flex-direction: column;
