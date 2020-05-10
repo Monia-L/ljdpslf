@@ -173,6 +173,12 @@ const Game = (): JSX.Element => {
         ) : (
           <p>En attente du lancement de la partie par l’hôte.</p>
         )}
+
+        <style jsx>{`
+          ul {
+            list-style: none;
+          }
+        `}</style>
       </>
     );
   }
