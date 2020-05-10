@@ -174,6 +174,11 @@ const Game = (): JSX.Element => {
 
     return (
       <>
+        {amIOwner && (
+          <p>
+            <i>Partagez l’URL à vos amis pour qu’ils vous rejoignent.</i>
+          </p>
+        )}
         <h2>Participants :</h2>
         <ul>
           {players.map((player) => (
