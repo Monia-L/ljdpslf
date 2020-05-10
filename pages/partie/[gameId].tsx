@@ -174,11 +174,9 @@ const Game = (): JSX.Element => {
 
     return (
       <>
-        {amIOwner && (
-          <p>
-            <i>Partagez l’URL à vos amis pour qu’ils vous rejoignent.</i>
-          </p>
-        )}
+        <p>
+          <i>Partagez l’URL à vos amis pour qu’ils vous rejoignent.</i>
+        </p>
         <h2>Participants :</h2>
         <ul>
           {players.map((player) => (
@@ -192,7 +190,10 @@ const Game = (): JSX.Element => {
             Lancer la partie
           </Button>
         ) : (
-          <p>En attente du lancement de la partie par l’hôte.</p>
+          <p>
+            En attente du lancement de la partie par l’hôte (
+            {players.find(({ isOwner }) => isOwner).name}).
+          </p>
         )}
 
         <style jsx>{`
