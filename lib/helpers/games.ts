@@ -16,6 +16,11 @@ const getPlayerFromSessionId = (
     : null;
 };
 
+const getSessionIdFromPlayerId = (
+  game: TGameDatabase,
+  playerId: string
+): string => game._sessions.find((session) => session.playerId === playerId).id;
+
 const getIndexOfFirstPlayerWithPhraseNotGuessed = (
   players: Array<TPlayer>,
   index: number
@@ -96,12 +101,19 @@ const areThereAtLeastTwoPlayersWhoHaveNotGuessedTheirPhrase = (
   players: Array<TPlayerForPlayer>
 ): boolean => players.filter((player) => !player.isPhraseGuessed).length >= 2;
 
+const getGameSubscriptionChannelId = (
+  gameId: string,
+  sessionId: string
+): string => `gameId=${gameId},sessionId=${sessionId}`;
+
 export {
   getGameForPlayer,
   getPlayerFromSessionId,
+  getSessionIdFromPlayerId,
   isPlayerRegistered,
   getNextPlayer,
   doAllPlayersHaveAPhraseToGuess,
   haveAllPlayersGuessedTheirPhrase,
   areThereAtLeastTwoPlayersWhoHaveNotGuessedTheirPhrase,
+  getGameSubscriptionChannelId,
 };

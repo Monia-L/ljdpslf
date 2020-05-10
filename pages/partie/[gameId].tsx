@@ -15,6 +15,7 @@ import LoadingIndicator from '../../lib/components/global/LoadingIndicator';
 import Button from '../../lib/components/global/Button';
 import PromptForText from '../../lib/components/partie|[gameId]/PromptForText';
 import PlayersWithPhrases from '../../lib/components/partie|[gameId]/PlayersWithPhrases';
+import { subscribeToGameUpdates } from '../../lib/subscriptions/games';
 
 const useGame = (
   gameId: string
@@ -59,6 +60,10 @@ const useGame = (
   useEffect(() => {
     fetchGameDetails();
   }, []);
+
+  useEffect(() => {
+    subscribeToGameUpdates(gameId, setGameDetails);
+  }, [gameId]);
 
   const registerInGame = async (name: string): Promise<void> => {
     setGameDetails(await _registerInGame(gameId, name));

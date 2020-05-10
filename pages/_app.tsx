@@ -47,7 +47,6 @@ App.getInitialProps = ({ ctx }): object => {
     if (!requestCookies.sessionId) {
       setCookie(ctx, 'sessionId', uuidv4(), {
         path: '/',
-        httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
         sameSite: true,
       });
