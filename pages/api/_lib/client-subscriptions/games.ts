@@ -6,12 +6,13 @@ import {
   getGameSubscriptionChannelId,
 } from '../../../../lib/helpers/games';
 
-const sendGameUpdateToPlayers = (game: TGameDatabase): void => {
-  game.players.forEach((player) => {
-    const sessionId = getSessionIdFromPlayerId(game, player.id);
-    const channelId = getGameSubscriptionChannelId(game.id, sessionId);
-    sendData(channelId, 'update', getGameForPlayer(game, sessionId));
-  });
-};
+const sendGameUpdateToPlayers = (game: TGameDatabase): Promise<void[]> =>
+  Promise.all(
+    game.players.map((player) => {
+      const sessionId = getSessionIdFromPlayerId(game, player.id);
+      const channelId = getGameSubscriptionChannelId(game.id, sessionId);
+      return sendData(channelId, 'update', getGameForPlayer(game, sessionId));
+    })
+  );
 
 export { sendGameUpdateToPlayers };

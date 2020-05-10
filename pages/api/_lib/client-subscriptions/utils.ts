@@ -7,10 +7,16 @@ const pusherChannelsClient = new Channels({
   cluster: process.env.PUSHER_CLUSTER,
 });
 
-const sendData = (channel: string, event: string, data: object): void => {
-  pusherChannelsClient.trigger(channel, event, data, () => {
-    console.log('event sent', data);
+const sendData = (
+  channel: string,
+  event: string,
+  data: object
+): Promise<void> =>
+  new Promise((resolve, reject) => {
+    pusherChannelsClient.trigger(channel, event, data, (err) => {
+      if (err) return reject(err);
+      resolve();
+    });
   });
-};
 
 export { sendData };

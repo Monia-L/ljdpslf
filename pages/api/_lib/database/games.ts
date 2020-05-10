@@ -43,7 +43,7 @@ const registerPlayer = async (
         { returnOriginal: false }
       )
     ).value;
-    sendGameUpdateToPlayers(updatedGame);
+    await sendGameUpdateToPlayers(updatedGame);
     return updatedGame;
   } else {
     const newPlayerId = uuidv4();
@@ -59,7 +59,7 @@ const registerPlayer = async (
         { returnOriginal: false }
       )
     ).value;
-    sendGameUpdateToPlayers(updatedGame);
+    await sendGameUpdateToPlayers(updatedGame);
     return updatedGame;
   }
 };
@@ -104,7 +104,7 @@ const setTurnToGuessToNextPlayer = async (
       { returnOriginal: false }
     )
   ).value;
-  sendGameUpdateToPlayers(updatedGame);
+  await sendGameUpdateToPlayers(updatedGame);
   return updatedGame;
 };
 
@@ -120,7 +120,7 @@ const updateGamePhase = async (
       { returnOriginal: false }
     )
   ).value;
-  sendGameUpdateToPlayers(updatedGame);
+  await sendGameUpdateToPlayers(updatedGame);
   return updatedGame.phase === GamePhase.GUESSING
     ? setTurnToGuessToNextPlayer(updatedGame)
     : updatedGame;
@@ -144,7 +144,7 @@ const setPhraseToGuess = async (
       { returnOriginal: false }
     )
   ).value;
-  sendGameUpdateToPlayers(updatedGame);
+  await sendGameUpdateToPlayers(updatedGame);
   return doAllPlayersHaveAPhraseToGuess(updatedGame.players)
     ? updateGamePhase(updatedGame.id, GamePhase.GUESSING)
     : updatedGame;
@@ -161,7 +161,7 @@ const passTurnToGuess = async (
   );
   if (currentPlayer === playerWithTurnToGuess) {
     const updatedGame = await setTurnToGuessToNextPlayer(game);
-    sendGameUpdateToPlayers(updatedGame);
+    await sendGameUpdateToPlayers(updatedGame);
     return haveAllPlayersGuessedTheirPhrase(updatedGame.players)
       ? updateGamePhase(updatedGame.id, GamePhase.COMPLETED)
       : updatedGame;
@@ -180,7 +180,7 @@ const setPhraseAsGuessedForPlayer = async (
       { returnOriginal: false }
     )
   ).value;
-  sendGameUpdateToPlayers(updatedGame);
+  await sendGameUpdateToPlayers(updatedGame);
   return updatedGame;
 };
 
