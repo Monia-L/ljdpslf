@@ -177,14 +177,16 @@ const Game = (): JSX.Element => {
         <p>
           <i>Partagez l’URL à vos amis pour qu’ils vous rejoignent.</i>
         </p>
-        <h2>Participants :</h2>
-        <ul>
-          {players.map((player) => (
-            <li key={player.id}>
-              {`${player.name}${player.isMe ? ' (vous)' : ''}`}
-            </li>
-          ))}
-        </ul>
+        <div className="players">
+          <h2>Participants :</h2>
+          <ul>
+            {players.map((player) => (
+              <li key={player.id}>
+                {`${player.name}${player.isMe ? ' (vous)' : ''}`}
+              </li>
+            ))}
+          </ul>
+        </div>
         {amIOwner ? (
           <Button onClick={enterWritingPhase} disabled={players.length < 2}>
             Lancer la partie
@@ -197,7 +199,19 @@ const Game = (): JSX.Element => {
         )}
 
         <style jsx>{`
+          .players {
+            padding: 12px;
+            background: #feff9c;
+            text-align: left;
+            margin-bottom: 20px;
+          }
+
+          h2 {
+            margin: 0;
+          }
+
           ul {
+            margin: 12px 0 0;
             list-style: none;
           }
         `}</style>
