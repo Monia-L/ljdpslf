@@ -9,7 +9,7 @@ const pusherChannelsClient = new Channels({
 
 const sendData = (channel: string, event: string, data: object): void => {
   pusherChannelsClient.trigger(channel, event, data, () => {
-    console.log('event sent');
+    console.log('event sent', data);
   });
 };
 
