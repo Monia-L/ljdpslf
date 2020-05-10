@@ -1,11 +1,17 @@
 import PropTypes from 'prop-types';
 import LoadingIndicator from './LoadingIndicator';
 
-const Button = ({ children, type, isLoading, onClick }): JSX.Element =>
+const Button = ({
+  children,
+  type,
+  disabled,
+  isLoading,
+  onClick,
+}): JSX.Element =>
   isLoading ? (
     <LoadingIndicator center={type !== 'submit'} />
   ) : (
-    <button type={type} disabled={isLoading} onClick={onClick}>
+    <button type={type} disabled={disabled} onClick={onClick}>
       {children}
 
       <style jsx>{`
@@ -19,6 +25,7 @@ const Button = ({ children, type, isLoading, onClick }): JSX.Element =>
           font-weight: bold;
           text-transform: uppercase;
           color: black;
+          cursor: ${disabled ? 'not-allowed' : 'initial'};
         }
 
         button:active {
@@ -31,12 +38,14 @@ const Button = ({ children, type, isLoading, onClick }): JSX.Element =>
 Button.propTypes = {
   children: PropTypes.node.isRequired,
   type: PropTypes.string,
+  disabled: PropTypes.bool,
   isLoading: PropTypes.bool,
   onClick: PropTypes.func,
 };
 
 Button.defaultProps = {
   type: 'button',
+  disabled: false,
   isLoading: false,
   onClick: (): void => {
     // Do nothing

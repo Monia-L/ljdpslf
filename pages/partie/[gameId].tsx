@@ -188,7 +188,9 @@ const Game = (): JSX.Element => {
           ))}
         </ul>
         {amIOwner ? (
-          <Button onClick={enterWritingPhase}>Lancer la partie</Button>
+          <Button onClick={enterWritingPhase} disabled={players.length < 2}>
+            Lancer la partie
+          </Button>
         ) : (
           <p>En attente du lancement de la partie par l’hôte.</p>
         )}
