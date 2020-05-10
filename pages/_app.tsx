@@ -10,8 +10,12 @@ const App = ({ Component, pageProps }): JSX.Element => {
   return (
     <>
       <Head>
-        <title>Le jeu des post-it sur le front</title>
+        <title>Le Jeu du post-it sur la tête</title>
         <link rel="icon" href="/favicon.ico" />
+        <meta
+          name="description"
+          content="Jouez avec vos amis au celèbre jeu des post-it, en face-à-face ou à distance."
+        />
       </Head>
       <div className="container">
         <header>
