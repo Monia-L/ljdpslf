@@ -2,6 +2,7 @@ import { TPlayerForPlayer } from '../../../types';
 import Button from '../global/Button';
 import LoadingIndicator from '../global/LoadingIndicator';
 import { useState } from 'react';
+import PhraseGuessedIndicator from './PhraseGuessedIndicator';
 
 const PlayersWithPhrases = ({
   players,
@@ -37,6 +38,7 @@ const PlayersWithPhrases = ({
               } de deviner…`}</i>
             )}
             <div className="name-and-phrase">
+              {isPhraseGuessed && <PhraseGuessedIndicator />}
               {isMe ? (
                 <>
                   Vous êtes <b>{phraseToGuess || '???'}</b>
@@ -84,6 +86,7 @@ const PlayersWithPhrases = ({
         }
 
         .name-and-phrase {
+          position: relative;
           padding: 12px;
           background: #feff9c;
         }
