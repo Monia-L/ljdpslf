@@ -14,7 +14,7 @@ const App = ({ Component, pageProps }): JSX.Element => {
         <link rel="icon" href="/favicon.ico" />
         <meta
           name="description"
-          content="Jouez avec vos amis au celèbre jeu des post-it, en face-à-face ou à distance."
+          content="Jouez avec vos amis au celèbre jeu du post-it, en face-à-face ou à distance."
         />
       </Head>
       <div className="container">
