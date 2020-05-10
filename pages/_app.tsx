@@ -16,6 +16,7 @@ const App = ({ Component, pageProps }): JSX.Element => {
           name="description"
           content="Jouez avec vos amis au celèbre jeu du post-it, en face-à-face ou à distance."
         />
+        <meta property="og:image" content="/meta-og-image.png" />
       </Head>
       <div className="container">
         <header>
