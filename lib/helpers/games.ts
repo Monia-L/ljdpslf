@@ -1,4 +1,10 @@
-import { TGameDatabase, TGameForPlayer, TPlayer, GamePhase } from '../../types';
+import {
+  TGameDatabase,
+  TGameForPlayer,
+  TPlayer,
+  GamePhase,
+  TPlayerForPlayer,
+} from '../../types';
 
 const getPlayerFromSessionId = (
   game: TGameDatabase,
@@ -86,6 +92,10 @@ const doAllPlayersHaveAPhraseToGuess = (players: Array<TPlayer>): boolean =>
 const haveAllPlayersGuessedTheirPhrase = (players: Array<TPlayer>): boolean =>
   doAllPlayersHaveATruthyValueForKey(players, 'isPhraseGuessed');
 
+const areThereAtLeastTwoPlayersWhoHaveNotGuessedTheirPhrase = (
+  players: Array<TPlayerForPlayer>
+): boolean => players.filter((player) => !player.isPhraseGuessed).length >= 2;
+
 export {
   getGameForPlayer,
   getPlayerFromSessionId,
@@ -93,4 +103,5 @@ export {
   getNextPlayer,
   doAllPlayersHaveAPhraseToGuess,
   haveAllPlayersGuessedTheirPhrase,
+  areThereAtLeastTwoPlayersWhoHaveNotGuessedTheirPhrase,
 };

@@ -3,6 +3,7 @@ import Button from '../global/Button';
 import LoadingIndicator from '../global/LoadingIndicator';
 import { useState } from 'react';
 import PhraseGuessedIndicator from './PhraseGuessedIndicator';
+import { areThereAtLeastTwoPlayersWhoHaveNotGuessedTheirPhrase } from '../../helpers/games';
 
 const PlayersWithPhrases = ({
   players,
@@ -54,9 +55,13 @@ const PlayersWithPhrases = ({
                     <LoadingIndicator />
                   ) : (
                     <>
-                      <Button onClick={callAction(passTurnToGuess)}>
-                        J’ai fini mon tour
-                      </Button>
+                      {areThereAtLeastTwoPlayersWhoHaveNotGuessedTheirPhrase(
+                        players
+                      ) && (
+                        <Button onClick={callAction(passTurnToGuess)}>
+                          J’ai fini mon tour
+                        </Button>
+                      )}
                       <Button onClick={callAction(setPhraseAsGuessed)}>
                         J’ai deviné
                       </Button>
