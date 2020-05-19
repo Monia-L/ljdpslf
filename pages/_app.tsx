@@ -10,11 +10,11 @@ const App = ({ Component, pageProps }): JSX.Element => {
   return (
     <>
       <Head>
-        <title>Le Jeu du post-it sur la tête</title>
+        <title>Le Jeu du post-it</title>
         <link rel="icon" href="/favicon.ico" />
         <meta
           name="description"
-          content="Jouez avec vos amis au celèbre jeu du post-it, face à face ou à distance."
+          content='Jouez avec vos amis au celèbre "jeu du post-it sur la tête", dans la même pièce ou aux quatre coins du monde.'
         />
         <meta property="og:image" content="/meta-og-image.png" />
       </Head>
