@@ -52,7 +52,7 @@ const PlayersWithPhrases = ({
                       players
                     ) && (
                       <Button onClick={passTurnToGuess}>
-                        J’ai fini mon tour
+                        Je n’ai pas deviné
                       </Button>
                     )}
                     <Button onClick={setPhraseAsGuessed}>J’ai deviné</Button>
