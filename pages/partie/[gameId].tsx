@@ -207,6 +207,7 @@ const Game = (): JSX.Element => {
           }
 
           h2 {
+            font-size: inherit;
             margin: 0;
           }
 

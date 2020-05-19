@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import { v4 as uuidv4 } from 'uuid';
 
 import AppLogo from '../lib/components/_app/AppLogo';
-import '../lib/styles.css';
 
 const App = ({ Component, pageProps }): JSX.Element => {
   return (
@@ -31,6 +30,20 @@ const App = ({ Component, pageProps }): JSX.Element => {
         </main>
 
         <style jsx>{`
+          .container {
+            min-height: 75vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+          }
+
+          @media screen and (min-width: 720px) {
+            .container {
+              min-height: 85vh;
+            }
+          }
+
           main {
             width: 280px;
             margin: 0 20px;
