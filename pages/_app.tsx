@@ -38,7 +38,7 @@ const App = ({ Component, pageProps }): JSX.Element => {
             text-align: center;
           }
 
-          @media screen and (min-width: 720px) {
+          @media screen and (min-width: 360px) {
             .container {
               min-height: 85vh;
             }
