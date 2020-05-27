@@ -3,7 +3,7 @@ import { setCookie, parseCookies } from 'nookies';
 import PropTypes from 'prop-types';
 import { v4 as uuidv4 } from 'uuid';
 
-import AppLogo from '../lib/components/_app/AppLogo';
+import AppLogo from '../lib/pages/components/_app/AppLogo';
 
 const App = ({ Component, pageProps }): JSX.Element => {
   return (

@@ -1,6 +1,6 @@
 import { NowRequest, NowResponse } from '@now/node';
 
-import { registerPlayer } from './_lib/database/games';
+import { registerPlayer } from '../../lib/api/database/games';
 import { getGameForPlayer } from '../../lib/helpers/games';
 
 export default async (

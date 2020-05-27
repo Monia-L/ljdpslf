@@ -6,8 +6,8 @@ import {
   getNextPlayer,
   doAllPlayersHaveAPhraseToGuess,
   haveAllPlayersGuessedTheirPhrase,
-} from '../../../../lib/helpers/games';
-import { GamePhase, TGameDatabase } from '../../../../types';
+} from '../../helpers/games';
+import { GamePhase, TGameDatabase } from '../../../types';
 import { sendGameUpdateToPlayers } from '../client-subscriptions/games';
 
 const createGame = async (ownerSessionId: string): Promise<TGameDatabase> => {

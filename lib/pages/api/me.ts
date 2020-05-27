@@ -1,5 +1,5 @@
 import { callApi } from '.';
-import { TGameForPlayer } from '../../types';
+import { TGameForPlayer } from '../../../types';
 
 const registerInGame = async (
   gameId: string,

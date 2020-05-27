@@ -1,11 +1,11 @@
 import { createMocks } from 'node-mocks-http';
 
-import TestDBManager from '../_lib/database/test-utils';
-import handler from './[id]';
+import TestDBManager from './database-utils';
+import handler from '../../../pages/api/games/[id]';
 
 const testDatabase = new TestDBManager();
 
-describe('/api/[id]', () => {
+describe('/api/games/[id]', () => {
   afterAll(() => testDatabase.stop());
   beforeAll(() => testDatabase.start());
   afterEach(() => testDatabase.cleanup());

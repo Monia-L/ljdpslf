@@ -1,8 +1,8 @@
-import { TPlayerForPlayer } from '../../../types';
+import { TPlayerForPlayer } from '../../../../types';
 import Button from '../global/Button';
 import LoadingIndicator from '../global/LoadingIndicator';
 import PhraseGuessedIndicator from './PhraseGuessedIndicator';
-import { areThereAtLeastTwoPlayersWhoHaveNotGuessedTheirPhrase } from '../../helpers/games';
+import { areThereAtLeastTwoPlayersWhoHaveNotGuessedTheirPhrase } from '../../../helpers/games';
 
 const PlayersWithPhrases = ({
   players,

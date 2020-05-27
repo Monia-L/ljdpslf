@@ -1,5 +1,5 @@
 import { callApi } from '.';
-import { TGameForPlayer, GamePhase } from '../../types';
+import { TGameForPlayer, GamePhase } from '../../../types';
 
 const createGame = async (): Promise<TGameForPlayer> => {
   return (await callApi('games', 'POST')).content;

@@ -1,7 +1,7 @@
 import MongoClient from 'mongodb';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 
-import { client as appClient } from './utils';
+import { client as appClient } from '../database/utils';
 
 // Extend the default timeout so MongoDB binaries can download
 jest.setTimeout(60000);

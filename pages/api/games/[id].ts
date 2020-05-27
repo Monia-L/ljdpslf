@@ -6,7 +6,7 @@ import {
   setPhraseToGuess,
   passTurnToGuess,
   setPhraseAsGuessedForCurrentPlayer,
-} from '../_lib/database/games';
+} from '../../../lib/api/database/games';
 import {
   isPlayerRegistered,
   getGameForPlayer,
@@ -14,7 +14,7 @@ import {
 import {
   GET_GAME_DETAILS_ERROR_MESSAGE,
   PATCH_GAME_ACTION,
-} from '../../../lib/api/games';
+} from '../../../lib/pages/api/games';
 import { GamePhase } from '../../../types';
 
 export default async (

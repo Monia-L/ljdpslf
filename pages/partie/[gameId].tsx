@@ -9,13 +9,13 @@ import {
   setPhraseToGuess as _setPhraseToGuess,
   passTurnToGuess as _passTurnToGuess,
   setPhraseAsGuessed as _setPhraseAsGuessed,
-} from '../../lib/api/games';
-import { registerInGame as _registerInGame } from '../../lib/api/me';
-import LoadingIndicator from '../../lib/components/global/LoadingIndicator';
-import Button from '../../lib/components/global/Button';
-import PromptForText from '../../lib/components/partie|[gameId]/PromptForText';
-import PlayersWithPhrases from '../../lib/components/partie|[gameId]/PlayersWithPhrases';
-import { subscribeToGameUpdates } from '../../lib/subscriptions/games';
+} from '../../lib/pages/api/games';
+import { registerInGame as _registerInGame } from '../../lib/pages/api/me';
+import LoadingIndicator from '../../lib/pages/components/global/LoadingIndicator';
+import Button from '../../lib/pages/components/global/Button';
+import PromptForText from '../../lib/pages/components/partie|[gameId]/PromptForText';
+import PlayersWithPhrases from '../../lib/pages/components/partie|[gameId]/PlayersWithPhrases';
+import { subscribeToGameUpdates } from '../../lib/pages/subscriptions/games';
 
 const useGame = (
   gameId: string

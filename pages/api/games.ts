@@ -1,5 +1,5 @@
 import { NowRequest, NowResponse } from '@now/node';
-import { createGame } from './_lib/database/games';
+import { createGame } from '../../lib/api/database/games';
 
 export default async (
   req: NowRequest,

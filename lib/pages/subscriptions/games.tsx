@@ -1,7 +1,7 @@
 import Pusher from 'pusher-js';
 
-import { getGameSubscriptionChannelId } from '../helpers/games';
-import { getSessionIdFromCookies } from '../helpers/browser';
+import { getGameSubscriptionChannelId } from '../../helpers/games';
+import { getSessionIdFromCookies } from '../utils/browser';
 
 const subscribeToGameUpdates = (
   gameId: string,
