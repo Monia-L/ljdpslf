@@ -17,4 +17,4 @@ const getCollection = async (name: string): Promise<Collection> => {
   return database.collection(name);
 };
 
-export { getDatabase, getCollection };
+export { client, getDatabase, getCollection };
