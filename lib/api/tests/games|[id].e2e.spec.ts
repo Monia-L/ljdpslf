@@ -6,9 +6,9 @@ import handler from '../../../pages/api/games/[id]';
 const testDatabase = new TestDBManager();
 
 describe('/api/games/[id]', () => {
-  afterAll(() => testDatabase.stop());
   beforeAll(() => testDatabase.start());
   afterEach(() => testDatabase.cleanup());
+  afterAll(() => testDatabase.stop());
 
   describe('GET', () => {
     describe('when player is not registered', () => {
