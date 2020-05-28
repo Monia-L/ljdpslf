@@ -1,17 +1,14 @@
 import { NowResponse } from '@now/node';
+import { ERRORS_TO_CATCH } from './constants';
 
 const sendResponse = async (
   res: NowResponse,
-  action: () => unknown,
-  errorsToCatch: {
-    message: string;
-    status: number;
-  }[]
+  action: () => unknown
 ): Promise<NowResponse> => {
   try {
     return res.status(200).json(await action());
   } catch (error) {
-    const errorToCatch = errorsToCatch.find(
+    const errorToCatch = ERRORS_TO_CATCH.find(
       (err) => err.message === error.message
     );
     if (errorToCatch) {
