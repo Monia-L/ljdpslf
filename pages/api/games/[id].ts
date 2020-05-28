@@ -23,14 +23,12 @@ export default async (
     const action = req.query.action as string;
     if (action) {
       if (action === PATCH_GAME_ACTION.PASS_TURN_TO_GUESS) {
-        res
-          .status(200)
-          .json(
-            getGameForPlayer(await passTurnToGuess(sessionId, id), sessionId)
-          );
+        return sendResponse(res, async () =>
+          getGameForPlayer(await passTurnToGuess(sessionId, id), sessionId)
+        );
       }
       if (action === PATCH_GAME_ACTION.SET_PHRASE_AS_GUESSED) {
-        res
+        return res
           .status(200)
           .json(
             getGameForPlayer(

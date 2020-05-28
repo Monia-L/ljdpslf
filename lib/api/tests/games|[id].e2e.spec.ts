@@ -2,6 +2,9 @@ import { createMocks } from 'node-mocks-http';
 
 import TestDBManager from './database-utils';
 import handler from '../../../pages/api/games/[id]';
+import { PATCH_GAME_ACTION } from '../../pages/api/games';
+
+jest.mock('../client-subscriptions/games');
 
 const testDatabase = new TestDBManager();
 
@@ -103,6 +106,80 @@ describe('/api/games/[id]', () => {
               isMe: true,
               isOwner: true,
               name: 'owner-player-name',
+            },
+          ],
+        });
+      });
+    });
+  });
+
+  describe('PATCH', () => {
+    let req;
+    let res;
+
+    beforeEach(() => {
+      const mocks = createMocks({
+        method: 'PATCH',
+        query: {
+          id: 'game-id',
+          action: PATCH_GAME_ACTION.PASS_TURN_TO_GUESS,
+        },
+        cookies: {
+          sessionId: 'my-session-id',
+        },
+      });
+      req = mocks.req;
+      res = mocks.res;
+    });
+
+    describe('when action is "pass turn to guess"', () => {
+      it('responds with updated game data for player', async () => {
+        await testDatabase.gamesCollection.insertOne({
+          id: 'game-id',
+          players: [
+            {
+              id: 'owner-player-id',
+              name: 'owner-player-name',
+              isOwner: true,
+              phraseToGuess: "Reine d'Angleterre",
+              isTheirTurnToGuess: true,
+            },
+            {
+              id: 'other-player-id',
+              name: 'other-player-name',
+              phraseToGuess: 'Maman',
+              isTheirTurnToGuess: false,
+            },
+          ],
+          _sessions: [
+            {
+              id: 'my-session-id',
+              playerId: 'owner-player-id',
+            },
+          ],
+          phase: 'WAITING_FOR_PLAYERS',
+        });
+
+        await handler(req, res);
+
+        expect(res._getStatusCode()).toBe(200);
+        expect(res._getJSONData()).toEqual({
+          id: 'game-id',
+          phase: 'WAITING_FOR_PLAYERS',
+          players: [
+            {
+              id: 'owner-player-id',
+              name: 'owner-player-name',
+              isOwner: true,
+              isMe: true,
+              isTheirTurnToGuess: false,
+            },
+            {
+              id: 'other-player-id',
+              name: 'other-player-name',
+              isMe: false,
+              isTheirTurnToGuess: true,
+              phraseToGuess: 'Maman',
             },
           ],
         });
