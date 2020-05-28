@@ -1,7 +1,6 @@
 import { NowRequest, NowResponse } from '@now/node';
 
 import {
-  getGame,
   updateGamePhase,
   setPhraseToGuess,
   passTurnToGuess,
@@ -10,6 +9,7 @@ import {
 import {
   isPlayerRegistered,
   getGameForPlayer,
+  getGame,
 } from '../../../lib/helpers/games';
 import {
   GET_GAME_DETAILS_ERROR_MESSAGE,
@@ -24,18 +24,21 @@ export default async (
   const id = req.query.id as string;
   const { sessionId } = req.cookies;
   if (req.method === 'GET') {
-    const game = await getGame(id);
-    if (!isPlayerRegistered(game, sessionId)) {
-      if (game.phase === GamePhase.WAITING_FOR_PLAYERS) {
+    try {
+      return res.status(200).json(await getGame(id, sessionId));
+    } catch (error) {
+      if (
+        error.message ===
+          GET_GAME_DETAILS_ERROR_MESSAGE.YOU_MUST_FIRST_SET_YOUR_NAME ||
+        error.message ===
+          GET_GAME_DETAILS_ERROR_MESSAGE.YOU_HAVE_MISSED_GAME_START
+      ) {
         return res.status(403).json({
-          message: GET_GAME_DETAILS_ERROR_MESSAGE.YOU_MUST_FIRST_SET_YOUR_NAME,
+          message: error.message,
         });
       }
-      return res.status(403).json({
-        message: GET_GAME_DETAILS_ERROR_MESSAGE.YOU_HAVE_MISSED_GAME_START,
-      });
+      return res.status(500);
     }
-    return res.status(200).json(getGameForPlayer(game, sessionId));
   }
   if (req.method === 'PATCH') {
     const action = req.query.action as string;
